@@ -2,3 +2,5 @@
 TestGamesClient/Logs
 TestGamesClient/Temp
 TestGamesClient/UserSettings
+TestGamesClient/obj
+TestGamesClient/.vs
