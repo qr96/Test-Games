@@ -18,4 +18,9 @@ public class PlayerA : MonoBehaviour
 
         rigid.velocity = new Vector2(input.x * speed * Time.fixedDeltaTime, input.y * speed * Time.fixedDeltaTime);
     }
+
+    private void LateUpdate()
+    {
+        Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - 10f);
+    }
 }
