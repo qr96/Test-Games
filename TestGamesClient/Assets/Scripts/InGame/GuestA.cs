@@ -8,20 +8,28 @@ public class GuestA : MonoBehaviour
     public SmoothMoverA mover;
     public PositionEventTriggerA moveTrigger;
 
-    float speed;
-    float correctionDis = 0.1f;
     float stopDis = 0.004f;
 
     Coroutine actionCo;
 
+    WaitingServiceA nowUsingService;
+
     public void SetMover(float speed, float correctionDis, float stopDis)
     {
-        this.speed = speed;
-        this.correctionDis = correctionDis;
         this.stopDis = stopDis;
 
         mover.SetMover(speed, correctionDis, stopDis);
     }
+
+    public void SetNowUsingService(WaitingServiceA nowUsingService)
+    {
+        this.nowUsingService = nowUsingService;
+    }
+
+    public WaitingServiceA GetNowUsingService()
+    {
+        return nowUsingService;
+    }    
 
     public void DoMove(Vector3 desPos, Action onFinish)
     {

@@ -7,14 +7,15 @@ public class GameA : MonoBehaviour
     public GameObject guestPrefab;
 
     public GameObject door;
-    public GameObject waitingZone;
-    public GameObject toilet;
+    //public GameObject waitingZone;
+    //public GameObject toilet;
 
-    ServiceA<GuestA> toiletService = new ServiceA<GuestA>();
+    public List<WaitingServiceA> toiletServices = new List<WaitingServiceA>();
+    //ServiceA<GuestA> toiletService = new ServiceA<GuestA>();
 
     private void Start()
     {
-        StartCoroutine(SpawnGuest(10f));
+        StartCoroutine(SpawnGuest(2f));
     }
 
     IEnumerator SpawnGuest(float term)
@@ -30,29 +31,65 @@ public class GameA : MonoBehaviour
         }
     }
 
-    void EnterToilet(GuestA guest)
+    int ChooseToilet()
     {
-        guest.SetMover(5f, 0.1f, 0.01f);
-        toiletService.Enqueue(guest);
+        var toiletCounter = 0;
+        var toiletIndex = 0;
+        var minGuests = int.MaxValue;
 
-        var waitingPos = waitingZone.transform.position;
-        waitingPos.y = waitingZone.transform.position.y - toiletService.GetWaiterCount() + 1;
-        guest.DoMove(waitingPos, MoveToUseToilet);
+        foreach (var service in toiletServices)
+        {
+            if (!service.IsUsingService())
+            {
+                toiletIndex = toiletCounter;
+                break;
+            }
+            else if (service.GetWaiterCount() < minGuests)
+            {
+                minGuests = service.GetWaiterCount();
+                toiletIndex = toiletCounter;
+            }
+
+            toiletCounter++;
+        }
+
+        return toiletIndex;
     }
 
-    void MoveToUseToilet()
+    void EnterToilet(GuestA guest)
     {
-        if (toiletService.IsUsingService())
+        var chooseToilet = ChooseToilet();
+        var toiletService = toiletServices[chooseToilet];
+
+        guest.SetNowUsingService(toiletService);
+        toiletService.Enqueue(guest);
+
+        guest.SetMover(5f, 0.1f, 0.01f);
+
+        //var waitingPos = waitingZone.transform.position;
+        //waitingPos.y = waitingZone.transform.position.y - toiletService.GetWaiterCount() + 1;
+        var waitingPos = toiletService.GetWaitingZone().transform.position;
+        waitingPos.y -= toiletService.GetWaiterCount() - 1;
+        guest.DoMove(waitingPos, () => MoveToUseToilet(guest.GetNowUsingService()));
+    }
+
+    void MoveToUseToilet(WaitingServiceA service)
+    {
+        if (service.IsUsingService())
             return;
 
-        if (toiletService.TryUsingService(out var guest, RearrangeToiletLine))
-            guest.GetComponent<GuestA>().DoMove(toilet.transform.position, () => UsingToilet(guest));
+        if (service.TryUsingService(out var guest, RearrangeToiletLine))
+            guest.DoMove(service.GetServiceZone().transform.position, () => UsingToilet(guest));
+            //guest.GetComponent<GuestA>().DoMove(toilet.transform.position, () => UsingToilet(guest));
     }
 
     void RearrangeToiletLine(GuestA guest, int waitingNumber)
     {
-        var waitingPos = waitingZone.transform.position;
-        waitingPos.y = waitingZone.transform.position.y - waitingNumber;
+        var service = guest.GetNowUsingService();
+        var waitingPos = service.GetWaitingZone().transform.position;
+        waitingPos.y -= waitingNumber;
+        //var waitingPos = waitingZone.transform.position;
+        //waitingPos.y = waitingZone.transform.position.y - waitingNumber;
         guest.DoMove(waitingPos, null);
     }
 
@@ -63,9 +100,9 @@ public class GameA : MonoBehaviour
 
     void FinishUsingToilet(GuestA guest)
     {
-        toiletService.CompleteToUsingService();
+        guest.GetNowUsingService().CompleteToUsingService();
         MoveToWashHand(guest);
-        MoveToUseToilet();
+        MoveToUseToilet(guest.GetNowUsingService());
     }
 
     void MoveToWashHand(GuestA guest)
