@@ -8,13 +8,20 @@ public class GameA : MonoBehaviour
 
     public GameObject door;
     public List<WaitingServiceA> toiletServices = new List<WaitingServiceA>();
+    public List<WorkEventA> toiletCleanWork = new List<WorkEventA>();
 
     private void Awake()
     {
-        foreach (var service in toiletServices)
+        for (int i = 0; i < toiletServices.Count; i++)
         {
-            service.SetSevice(3);
-            service.ChargeAvailableCount();
+            var indexTmp = i;
+            toiletServices[i].SetSevice(3, () => NeedCleanToilet(indexTmp), RearrangeToiletLine);
+            toiletServices[i].ChargeAvailableCount();
+            toiletCleanWork[indexTmp].SetWorkEvent(5f, () =>
+            {
+                toiletServices[indexTmp].ChargeAvailableCount();
+                toiletCleanWork[indexTmp].gameObject.SetActive(false);
+            });
         }
     }
 
@@ -62,6 +69,11 @@ public class GameA : MonoBehaviour
         return toiletIndex;
     }
 
+    void NeedCleanToilet(int index)
+    {
+        toiletCleanWork[index].gameObject.SetActive(true);
+    }
+
     void EnterToilet(GuestA guest)
     {
         var chooseToilet = ChooseToilet();
@@ -79,7 +91,7 @@ public class GameA : MonoBehaviour
 
     void MoveToUseToilet(WaitingServiceA service)
     {
-        if (service.TryUsingService(out var guest, RearrangeToiletLine))
+        if (service.TryUsingService(out var guest))
             guest.DoMove(service.GetServiceZone().transform.position, () => UsingToilet(guest));
     }
 

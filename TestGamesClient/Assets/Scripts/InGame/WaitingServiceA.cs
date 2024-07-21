@@ -9,16 +9,19 @@ public class WaitingServiceA : MonoBehaviour
     public GameObject waitingZone;
 
     int maxAvailable;
+    Action onNeedCharge;
+    Action<GuestA, int> onRearrangeQue;
 
-    //WaitingQue<GuestA> waitingQue = new WaitingQue<GuestA>();
     Queue<GuestA> waitingQue = new Queue<GuestA>();
 
     int nowAvailable = 0;
     bool usingService = false;
 
-    public void SetSevice(int maxAvailable)
+    public void SetSevice(int maxAvailable, Action onNeedCharge, Action<GuestA, int> onRearrangeQue)
     {
         this.maxAvailable = maxAvailable;
+        this.onNeedCharge = onNeedCharge;
+        this.onRearrangeQue = onRearrangeQue;
     }
 
     public void ChargeAvailableCount()
@@ -41,14 +44,14 @@ public class WaitingServiceA : MonoBehaviour
         return waitingQue.Count;
     }
 
-    public bool TryUsingService(out GuestA waiter, Action<GuestA, int> onRearrangeQue)
+    public bool TryUsingService(out GuestA waiter)
     {
         if (IsAvailable() && GetWaiterCount() > 0)
         {
             usingService = true;
             nowAvailable--;
             waiter = waitingQue.Dequeue();
-            OnRearrangeQue(onRearrangeQue);
+            RearrangeQue();
             return true;
         }
 
@@ -58,6 +61,7 @@ public class WaitingServiceA : MonoBehaviour
 
     public void CompleteToUsingService()
     {
+        if (nowAvailable <= 0) onNeedCharge?.Invoke();
         usingService = false;
     }
 
@@ -71,7 +75,7 @@ public class WaitingServiceA : MonoBehaviour
         return serviceZone;
     }
 
-    void OnRearrangeQue(Action<GuestA, int> onRearrangeQue)
+    void RearrangeQue()
     {
         var waitingNumber = 0;
         foreach (var waiter in waitingQue)
