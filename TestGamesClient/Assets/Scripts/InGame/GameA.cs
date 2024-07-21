@@ -10,8 +10,7 @@ public class GameA : MonoBehaviour
     public GameObject waitingZone;
     public GameObject toilet;
 
-    Queue<GameObject> waitingLine = new Queue<GameObject>();
-    bool usingToilet = false;
+    ServiceA<GuestA> toiletService = new ServiceA<GuestA>();
 
     private void Start()
     {
@@ -25,56 +24,52 @@ public class GameA : MonoBehaviour
             var guest = Instantiate(guestPrefab);
             guest.transform.position = door.transform.position;
             guest.gameObject.SetActive(true);
-            EnterToilet(guest);
+            EnterToilet(guest.GetComponent<GuestA>());
 
             yield return new WaitForSeconds(term);
         }
     }
 
-    void EnterToilet(GameObject guest)
+    void EnterToilet(GuestA guest)
     {
-        guest.GetComponent<GuestA>().SetMover(0.01f, 0.1f, 0.0004f);
-        waitingLine.Enqueue(guest);
+        guest.SetMover(5f, 0.1f, 0.01f);
+        toiletService.Enqueue(guest);
 
         var waitingPos = waitingZone.transform.position;
-        waitingPos.y = waitingZone.transform.position.y - waitingLine.Count + 1;
-        guest.GetComponent<GuestA>().DoMove(waitingPos, MoveToUseToilet);
+        waitingPos.y = waitingZone.transform.position.y - toiletService.GetWaiterCount() + 1;
+        guest.DoMove(waitingPos, MoveToUseToilet);
     }
 
     void MoveToUseToilet()
     {
-        if (usingToilet)
+        if (toiletService.IsUsingService())
             return;
 
-        usingToilet = true;
-
-        var guest = waitingLine.Dequeue();
-        guest.GetComponent<GuestA>().DoMove(toilet.transform.position, () => UsingToilet(guest));
-
-        var waitignNumber = 0;
-        foreach (var waiter in waitingLine)
-        {
-            var waitingPos = waitingZone.transform.position;
-            waitingPos.y = waitingZone.transform.position.y - waitignNumber;
-            waiter.GetComponent<GuestA>().DoMove(waitingPos, null);
-            waitignNumber++;
-        }
+        if (toiletService.TryUsingService(out var guest, RearrangeToiletLine))
+            guest.GetComponent<GuestA>().DoMove(toilet.transform.position, () => UsingToilet(guest));
     }
 
-    void UsingToilet(GameObject guest)
+    void RearrangeToiletLine(GuestA guest, int waitingNumber)
     {
-        guest.GetComponent<GuestA>().DoAction(15f, () => FinishUsingToilet(guest));
+        var waitingPos = waitingZone.transform.position;
+        waitingPos.y = waitingZone.transform.position.y - waitingNumber;
+        guest.DoMove(waitingPos, null);
     }
 
-    void FinishUsingToilet(GameObject guest)
+    void UsingToilet(GuestA guest)
     {
-        usingToilet = false;
+        guest.DoAction(15f, () => FinishUsingToilet(guest));
+    }
+
+    void FinishUsingToilet(GuestA guest)
+    {
+        toiletService.CompleteToUsingService();
         MoveToWashHand(guest);
         MoveToUseToilet();
     }
 
-    void MoveToWashHand(GameObject guest)
+    void MoveToWashHand(GuestA guest)
     {
-        guest.GetComponent<GuestA>().DoMove(door.transform.position, () => guest.gameObject.SetActive(false));
+        guest.DoMove(door.transform.position, () => guest.gameObject.SetActive(false));
     }
 }
