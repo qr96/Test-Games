@@ -7,11 +7,7 @@ public class GameA : MonoBehaviour
     public GameObject guestPrefab;
 
     public GameObject door;
-    //public GameObject waitingZone;
-    //public GameObject toilet;
-
     public List<WaitingServiceA> toiletServices = new List<WaitingServiceA>();
-    //ServiceA<GuestA> toiletService = new ServiceA<GuestA>();
 
     private void Start()
     {
@@ -66,8 +62,6 @@ public class GameA : MonoBehaviour
 
         guest.SetMover(5f, 0.1f, 0.01f);
 
-        //var waitingPos = waitingZone.transform.position;
-        //waitingPos.y = waitingZone.transform.position.y - toiletService.GetWaiterCount() + 1;
         var waitingPos = toiletService.GetWaitingZone().transform.position;
         waitingPos.y -= toiletService.GetWaiterCount() - 1;
         guest.DoMove(waitingPos, () => MoveToUseToilet(guest.GetNowUsingService()));
@@ -80,7 +74,6 @@ public class GameA : MonoBehaviour
 
         if (service.TryUsingService(out var guest, RearrangeToiletLine))
             guest.DoMove(service.GetServiceZone().transform.position, () => UsingToilet(guest));
-            //guest.GetComponent<GuestA>().DoMove(toilet.transform.position, () => UsingToilet(guest));
     }
 
     void RearrangeToiletLine(GuestA guest, int waitingNumber)
@@ -88,8 +81,6 @@ public class GameA : MonoBehaviour
         var service = guest.GetNowUsingService();
         var waitingPos = service.GetWaitingZone().transform.position;
         waitingPos.y -= waitingNumber;
-        //var waitingPos = waitingZone.transform.position;
-        //waitingPos.y = waitingZone.transform.position.y - waitingNumber;
         guest.DoMove(waitingPos, null);
     }
 
