@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ServiceA<T>
+public class WaitingQue<T>
 {
     Queue<T> waitingQue = new Queue<T>();
     bool usingService = false;
