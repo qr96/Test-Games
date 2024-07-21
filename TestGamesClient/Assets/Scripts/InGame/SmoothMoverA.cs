@@ -21,7 +21,7 @@ public class SmoothMoverA : MonoBehaviour
         var leftDis = (desPos - transform.position).sqrMagnitude;
 
         if (leftDis > correctionDis)
-            transform.position = Vector3.MoveTowards(transform.position, desPos, speed);
+            transform.position = Vector3.MoveTowards(transform.position, desPos, speed * Time.deltaTime);
         else if (leftDis > stopDis)
             transform.position = Vector3.Lerp(transform.position, desPos, 0.5f);
     }
