@@ -9,6 +9,15 @@ public class GameA : MonoBehaviour
     public GameObject door;
     public List<WaitingServiceA> toiletServices = new List<WaitingServiceA>();
 
+    private void Awake()
+    {
+        foreach (var service in toiletServices)
+        {
+            service.SetSevice(3);
+            service.ChargeAvailableCount();
+        }
+    }
+
     private void Start()
     {
         StartCoroutine(SpawnGuest(2f));
@@ -35,12 +44,13 @@ public class GameA : MonoBehaviour
 
         foreach (var service in toiletServices)
         {
-            if (!service.IsUsingService())
+            if (service.GetWaiterCount() == 0 && service.IsAvailable())
             {
                 toiletIndex = toiletCounter;
                 break;
             }
-            else if (service.GetWaiterCount() < minGuests)
+
+            if (service.GetWaiterCount() < minGuests)
             {
                 minGuests = service.GetWaiterCount();
                 toiletIndex = toiletCounter;
@@ -69,9 +79,6 @@ public class GameA : MonoBehaviour
 
     void MoveToUseToilet(WaitingServiceA service)
     {
-        if (service.IsUsingService())
-            return;
-
         if (service.TryUsingService(out var guest, RearrangeToiletLine))
             guest.DoMove(service.GetServiceZone().transform.position, () => UsingToilet(guest));
     }
