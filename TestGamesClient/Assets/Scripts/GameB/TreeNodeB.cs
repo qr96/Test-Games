@@ -2,36 +2,48 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using static UnityEditorInternal.ReorderableList;
 
-public class TreeNodeB : MonoBehaviour, IDragHandler, IEndDragHandler, IDropHandler
+public class TreeNodeB : MonoBehaviour
 {
+    public TreeNodeBoardB board;
+    public List<TreeMakerChoiceB> choiceList;
+
     RectTransform rectTransform;
 
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
+        board.SetEventTrigger(OnDrag, OnEndDrag);
     }
 
-    public void OnDrag(PointerEventData eventData)
+    public void SetNodeId(int id)
+    {
+        board.SetNodeId(id);
+        foreach (var choice in choiceList)
+            choice.SetId(id);
+    }
+
+    public void Connect(int choiceId, int targetNodeId)
+    {
+        choiceList[choiceId].Connect(targetNodeId);
+    }
+
+    public void Disconnect(int choiceId)
+    {
+        choiceList[choiceId].Disconnect();
+    }
+
+    void OnDrag(PointerEventData eventData)
     {
         transform.position = eventData.position;
         transform.SetAsLastSibling();
     }
 
-    public void OnEndDrag(PointerEventData eventData)
+    void OnEndDrag(PointerEventData eventData)
     {
         var correctPos = rectTransform.anchoredPosition;
-        correctPos.x = Mathf.RoundToInt(correctPos.x / 40) * 40;
-        correctPos.y = Mathf.RoundToInt(correctPos.y / 40) * 40;
+        correctPos.x = Mathf.RoundToInt(correctPos.x / 80) * 80;
+        correctPos.y = Mathf.RoundToInt(correctPos.y / 80) * 80;
         rectTransform.anchoredPosition = correctPos;
-    }
-
-    public void OnDrop(PointerEventData eventData)
-    {
-        if (eventData.pointerDrag != null)
-        {
-            eventData.pointerDrag.transform.position = transform.position;
-        }
     }
 }
