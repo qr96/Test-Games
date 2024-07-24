@@ -26,10 +26,6 @@ public class UIManager : MonoBehaviour
         canvasChangeCallback.SetDimensionsChangeCallback(() =>
         {
             UIUtil.ApplySafeAreaAnchor(ref root);
-            UIUtil.ApplyPreserveRatio(root, 0.75f);
-
-            var nowRatio = (float)Screen.width / Screen.height;
-            Camera.main.orthographicSize = nowRatio * -8 + 14f;
         });
     }
 
