@@ -26,6 +26,12 @@ public class TreeMakerLayoutB : UILayout
         nodeDic.Add(node.GetId(), nodeGo);
     }
 
+    public void SetNode(int nodeId, Texture2D texture)
+    {
+        if (nodeDic.ContainsKey(nodeId) && texture != null)
+            nodeDic[nodeId].SetNode(texture);
+    }
+
     public void ConnectNodes(int nodeId, int nodeChoiceId, int targetNodeId)
     {
         if (nodeId == targetNodeId)
