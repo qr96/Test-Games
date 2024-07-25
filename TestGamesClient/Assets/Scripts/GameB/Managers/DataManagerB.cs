@@ -20,7 +20,11 @@ public class DataManagerB : MonoBehaviour
             nodeId = ++nodeIdCounter;
 
         var createdNode = new NodeDataB(nodeId);
+        foreach (var node in nodeDic.Values)
+            if (createdNode.GetPosition() == node.GetPosition())
+                createdNode.SetPosition(createdNode.GetPosition() + new Vector2(80f, -80f));
         nodeDic.Add(nodeId, createdNode);
+
         ManagersB.ui.GetLayout<TreeMakerLayoutB>().AddNode(createdNode);
 
         Debug.Log($"CreateNode() created nodeID : {nodeId}");
