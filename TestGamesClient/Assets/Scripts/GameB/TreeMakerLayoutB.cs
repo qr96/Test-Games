@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TreeMakerLayoutB : UILayout
 {
@@ -8,10 +9,11 @@ public class TreeMakerLayoutB : UILayout
     public TreeNodeB nodePrefab;
     public Transform nodeParent;
 
+    public Button createNode;
+
     private void Start()
     {
-        AddNode(new NodeDataB(0));
-        AddNode(new NodeDataB(1));
+        createNode.onClick.AddListener(OnClickCreateNode);
     }
 
     public void AddNode(NodeDataB node)
@@ -19,6 +21,8 @@ public class TreeMakerLayoutB : UILayout
         var nodeGo = Instantiate(nodePrefab, nodeParent);
         nodeGo.SetNodeId(node.GetId());
         nodeGo.gameObject.SetActive(true);
+        nodeGo.GetComponent<RectTransform>().anchoredPosition = node.GetPosition();
+
         nodeDic.Add(node.GetId(), nodeGo);
     }
 
@@ -42,5 +46,10 @@ public class TreeMakerLayoutB : UILayout
             nodeDic[nodeId].Disconnect(nodeChoiceId);
         else
             Debug.Log($"ConnectNodes() nodeId {nodeId} doesn't exist");
+    }
+
+    void OnClickCreateNode()
+    {
+        ManagersB.data.CreateNode();
     }
 }

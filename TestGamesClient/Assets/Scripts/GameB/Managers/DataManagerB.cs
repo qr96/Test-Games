@@ -4,11 +4,25 @@ using UnityEngine;
 
 public class DataManagerB : MonoBehaviour
 {
+    int nodeIdCounter = 0;
     Dictionary<int, NodeDataB> nodeDic = new Dictionary<int, NodeDataB>();
 
     private void Start()
     {
-        nodeDic.Add(0, new NodeDataB(0));
-        nodeDic.Add(1, new NodeDataB(1));
+        CreateNode();
+        CreateNode();
+    }
+
+    public void CreateNode()
+    {
+        var nodeId = nodeIdCounter;
+        while (nodeDic.ContainsKey(nodeId))
+            nodeId = ++nodeIdCounter;
+
+        var createdNode = new NodeDataB(nodeId);
+        nodeDic.Add(nodeId, createdNode);
+        ManagersB.ui.GetLayout<TreeMakerLayoutB>().AddNode(createdNode);
+
+        Debug.Log($"CreateNode() created nodeID : {nodeId}");
     }
 }
