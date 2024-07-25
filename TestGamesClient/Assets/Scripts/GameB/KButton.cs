@@ -1,16 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 using static UnityEngine.UI.Button;
 
-public class KButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+public class KButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerClickHandler
 {
-    public GameObject background;
-    public TMP_Text text;
+    ButtonClickedEvent m_OnClick = new ButtonClickedEvent();
 
     Vector3 normalScale;
 
@@ -27,5 +28,16 @@ public class KButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public void OnPointerUp(PointerEventData eventData)
     {
         transform.localScale = normalScale;
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        onClick?.Invoke();
+    }
+
+    public ButtonClickedEvent onClick
+    {
+        get { return m_OnClick; }
+        set { m_OnClick = value; }
     }
 }
