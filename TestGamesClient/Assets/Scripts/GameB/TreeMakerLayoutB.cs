@@ -9,7 +9,7 @@ public class TreeMakerLayoutB : UILayout
     public TreeNodeB nodePrefab;
     public Transform nodeParent;
 
-    public Button createNode;
+    public KButton createNode;
 
     private void Start()
     {
@@ -50,6 +50,7 @@ public class TreeMakerLayoutB : UILayout
 
     void OnClickCreateNode()
     {
-        ManagersB.data.CreateNode();
+        //ManagersB.data.CreateNode();
+        ManagersB.ui.ShowPopup<TreeMakerCreateNodePopupB>();
     }
 }
