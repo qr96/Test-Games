@@ -1,18 +1,22 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MyPlayerB : MonoBehaviour
 {
     public Rigidbody2D rigid;
     public Animator animator;
     public TriggerEvent2D attackTrigger;
+    public SpriteRenderer attackEffect;
 
     public float speed;
     public float attackDelay = 1f;
+    public float pushPower = 3f;
 
-    HashSet<IDamageableC> targets = new HashSet<IDamageableC>();
+    HashSet<EnemyC> targets = new HashSet<EnemyC>();
 
     Vector2 input;
     DateTime attackEnd;
@@ -55,7 +59,7 @@ public class MyPlayerB : MonoBehaviour
 
     void OnAttackStart(Collider2D collider)
     {
-        var target = collider.gameObject.GetComponent<IDamageableC>();
+        var target = collider.gameObject.GetComponent<EnemyC>();
 
         if (target != null)
             targets.Add(target);
@@ -65,7 +69,7 @@ public class MyPlayerB : MonoBehaviour
 
     void OnAttackEnd(Collider2D collider)
     {
-        targets.Remove(collider.GetComponent<IDamageableC>());
+        targets.Remove(collider.GetComponent<EnemyC>());
         if (targets.Count == 0)
             isOnAttack = false;
     }
@@ -79,7 +83,21 @@ public class MyPlayerB : MonoBehaviour
 
         yield return new WaitForSeconds(delay);
 
+        attackEffect.DOFade(1f, 0.01f).OnComplete(() => attackEffect.DOFade(0f, 0.29f));
+
         foreach (var target in targets)
+        {
             target.OnDamage(10);
+            target.OnPush(CalculatePushVector(transform.position, target.transform.position) * pushPower);
+            target.SetTartget(transform);
+        }
+    }
+
+    Vector2 CalculatePushVector(Vector2 myVector, Vector2 enemyVector)
+    {
+        var pushVector = Vector2.zero;
+        pushVector = enemyVector - myVector;
+        pushVector = pushVector.normalized;
+        return pushVector;
     }
 }
