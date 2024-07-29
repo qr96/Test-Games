@@ -5,7 +5,6 @@ using UnityEngine.AI;
 
 public class RigidMoverC : MonoBehaviour
 {
-    public NavMeshAgent navMeshAgent;
     Rigidbody2D rigid;
 
     public float speed = 0.01f;
