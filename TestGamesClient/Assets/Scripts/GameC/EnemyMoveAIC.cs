@@ -50,16 +50,21 @@ public class EnemyMoveAIC : MonoBehaviour
     void SetUndesiredWeights(Vector2 undesiredPos)
     {
         var index = VectorToIndex(undesiredPos - (Vector2)transform.position);
+        var dis = (undesiredPos - (Vector2)transform.position).sqrMagnitude;
+
+        if (dis > 0.5f)
+            return;
+
         weights[index] -= 100;
         for (int i = 1; i < 5; i++)
         {
-            weights[(index + i) % 16] -= 100 - i * 5;
-            weights[(index + 16 - i) % 16] -= 100 - i * 5;
+            weights[(index + i) % 16] -= 100 - i * 10;
+            weights[(index + 16 - i) % 16] -= 100 - i * 10;
         }
         for (int i = 5; i < 8; i++)
         {
-            weights[(index + i) % 16] -= 60 - (i - 4) * 10;
-            weights[(index + 16 - i) % 16] -= 60 - (i - 4) * 10;
+            weights[(index + i) % 16] -= 60 - (i - 4) * 20;
+            weights[(index + 16 - i) % 16] -= 60 - (i - 4) * 20;
         }
         weights[(index + 8) % 16] += 10;
     }
