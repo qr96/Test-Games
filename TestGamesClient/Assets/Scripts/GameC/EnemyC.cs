@@ -7,6 +7,8 @@ using UnityEngine.AI;
 
 public class EnemyC : MonoBehaviour, IDamageableC, IPushableC
 {
+    public TriggerEvent2D detectCollider;
+
     Rigidbody2D rigid;
     RigidMoverC rigidMover;
 
@@ -18,6 +20,8 @@ public class EnemyC : MonoBehaviour, IDamageableC, IPushableC
     {
         rigid = GetComponent<Rigidbody2D>();
         rigidMover = GetComponent<RigidMoverC>();
+
+        detectCollider.SetTriggerEvent((col) => SetTartget(col.transform));
     }
 
     private void Update()
