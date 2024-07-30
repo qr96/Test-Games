@@ -8,13 +8,17 @@ using UnityEngine.AI;
 public class EnemyC : MonoBehaviour, IDamageableC, IPushableC
 {
     public TriggerEvent2D detectCollider;
+    public SPUM_SpriteList sprites;
+
+    public Material normalMat;
+    public Material attackedMat;
+
+    public float knockBackDuration;
 
     Rigidbody2D rigid;
     RigidMoverC rigidMover;
 
     Transform target;
-
-    DateTime endKnockBack;
 
     private void Awake()
     {
@@ -26,11 +30,6 @@ public class EnemyC : MonoBehaviour, IDamageableC, IPushableC
 
     private void Update()
     {
-        if (DateTime.Now > endKnockBack)
-        {
-            rigidMover.enabled = true;
-        }
-
         if (target != null)
         {
             rigidMover.Move(target.position);
@@ -39,12 +38,39 @@ public class EnemyC : MonoBehaviour, IDamageableC, IPushableC
 
     public void OnDamage(long damage)
     {
+        transform.DOLocalRotate(new Vector3(0f, 0f, -15f), knockBackDuration / 4f)
+            .OnComplete(() => transform.DOLocalRotate(new Vector3(0f, 0f, 10f), knockBackDuration / 2f)
+            .OnComplete(() =>
+                {
+                    transform.DOLocalRotate(Vector3.zero, knockBackDuration / 4f);
+                    rigidMover.enabled = true;
 
+                    foreach (var sr in sprites._hairList)
+                        sr.material = normalMat;
+                    foreach (var sr in sprites._bodyList)
+                        sr.material = normalMat;
+                    foreach (var sr in sprites._armorList)
+                        sr.material = normalMat;
+                    foreach (var sr in sprites._clothList)
+                        sr.material = normalMat;
+                    foreach (var sr in sprites._pantList)
+                        sr.material = normalMat;
+                }));
+
+        foreach (var sr in sprites._hairList)
+            sr.material = attackedMat;
+        foreach (var sr in sprites._bodyList)
+            sr.material = attackedMat;
+        foreach (var sr in sprites._armorList)
+            sr.material = attackedMat;
+        foreach (var sr in sprites._clothList)
+            sr.material = attackedMat;
+        foreach (var sr in sprites._pantList)
+            sr.material = attackedMat;
     }
 
     public void OnPush(Vector2 pushVector)
     {
-        endKnockBack = DateTime.Now.AddSeconds(0.3f);
         rigidMover.enabled = false;
         rigid.AddForce(pushVector, ForceMode2D.Impulse);
     }
