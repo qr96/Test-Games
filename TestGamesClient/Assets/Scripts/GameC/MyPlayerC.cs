@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MyPlayerB : MonoBehaviour
+public class MyPlayerB : MonoBehaviour, IDamageableC
 {
     public Rigidbody2D rigid;
     public Animator animator;
@@ -99,5 +99,10 @@ public class MyPlayerB : MonoBehaviour
         pushVector = enemyVector - myVector;
         pushVector = pushVector.normalized;
         return pushVector;
+    }
+
+    public void OnDamage(long damage)
+    {
+        //throw new NotImplementedException();
     }
 }
