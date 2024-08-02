@@ -19,15 +19,17 @@ public class KStateMachine<T> where T : Enum
 
     public void SetState(T state)
     {
-        if (onLeaveEvent.ContainsKey(nowState))
+        var prevState = nowState;
+        nowState = state;
+
+        if (onLeaveEvent.ContainsKey(prevState))
         {
             onLeaveEvent[nowState]?.Invoke();
         }
         if (onEnterEvent.ContainsKey(state))
         {
-            onEnterEvent[state]?.Invoke(nowState);
+            onEnterEvent[state]?.Invoke(prevState);
         }
-        nowState = state;
     }
 
     public void SetEvent(T state, Action<T> onEnter, Action onUpdate = null, Action onLeave = null)
