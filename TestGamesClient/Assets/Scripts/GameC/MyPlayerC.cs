@@ -87,6 +87,9 @@ public class MyPlayerB : MonoBehaviour, IDamageableC
 
         foreach (var target in targets)
         {
+            var targetId = target.GetId();
+            LocalPacketSender.SendAttack(targetId);
+
             target.OnDamage(10);
             target.OnPush(CalculatePushVector(transform.position, target.transform.position) * pushPower);
             target.SetTartget(transform);

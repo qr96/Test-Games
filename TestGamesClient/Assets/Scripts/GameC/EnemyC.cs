@@ -1,10 +1,7 @@
 using DG.Tweening;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class EnemyC : MonoBehaviour, IDamageableC, IPushableC
 {
@@ -22,11 +19,12 @@ public class EnemyC : MonoBehaviour, IDamageableC, IPushableC
 
     KStateMachine<State> sm = new KStateMachine<State>();
 
+    SpawnedC spawned;
     Collider2D collider;
     Rigidbody2D rigid;
     RigidMoverC rigidMover;
 
-    Transform target;
+    public Transform target;
     IDamageableC attackTarget;
 
     DateTime attackEndTime;
@@ -45,6 +43,7 @@ public class EnemyC : MonoBehaviour, IDamageableC, IPushableC
 
     private void Awake()
     {
+        spawned = GetComponent<SpawnedC>();
         collider = GetComponent<Collider2D>();
         rigid = GetComponent<Rigidbody2D>();
         rigidMover = GetComponent<RigidMoverC>();
@@ -52,6 +51,7 @@ public class EnemyC : MonoBehaviour, IDamageableC, IPushableC
         detectTrigger.SetTriggerEvent((col) => SetTartget(col.transform));
         attackTrigger.SetTriggerEvent(OnEnterAttackTrigger, OnExitAttackTrigger);
 
+        sm.SetEvent(State.Respawn, StateRespawnEnter);
         sm.SetEvent(State.Idle, StateIdleEnter, StateIdleUpdate);
         sm.SetEvent(State.Move, StateMoveEnter, StateMoveUpdate);
         sm.SetEvent(State.Attack, StateAttackEnter, StateAttackUpdate);
@@ -66,10 +66,14 @@ public class EnemyC : MonoBehaviour, IDamageableC, IPushableC
         sm.Update();
     }
 
+    public int GetId()
+    {
+        return spawned.GetId();
+    }
+
     public void OnDamage(long damage)
     {
         sm.SetState(State.Attacked);
-        dead = true;
     }
 
     public void OnPush(Vector2 pushVector)
@@ -190,6 +194,7 @@ public class EnemyC : MonoBehaviour, IDamageableC, IPushableC
     {
         collider.enabled = false;
         rigidMover.enabled = false;
+        rigid.velocity = Vector3.zero;
         animator.SetBool("Moving", false);
         animator.SetBool("Dead", true);
         detectTrigger.gameObject.SetActive(false);
