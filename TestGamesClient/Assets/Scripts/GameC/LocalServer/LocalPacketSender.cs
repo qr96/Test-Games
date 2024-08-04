@@ -2,17 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LocalPacketSender : MonoBehaviour
+public class LocalPacketSender
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    static LocalServerC.LocalServer server = LocalServerC.LocalServer.Instance;
 
-    // Update is called once per frame
-    void Update()
+    public static void SendAttack(int id)
     {
-        
+        server.AttackMonster(id);
     }
 }

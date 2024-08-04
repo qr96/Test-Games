@@ -32,29 +32,27 @@ namespace LocalServerC
 
     public class Monster : IDamageable
     {
-        Stat nowStat;
+        public int Id;
 
-        Action onSpawn;
-        Action onDamage;
-        Action onDead;
+        public Stat nowStat;
+        public Vector2 position;
 
-        public void SetEvents(Action onSpawn, Action onDamage, Action onDead)
+        public Monster(int id)
         {
-            this.onSpawn = onSpawn;
-            this.onDamage = onDamage;
-            this.onDead = onDead;
+            Id = id;
+            nowStat = new Stat();
         }
 
-        public void Spawn(Stat stat)
+        public void Spawn(Stat stat, Vector2 position)
         {
             nowStat.Set(stat);
-            onSpawn?.Invoke();
+            this.position = position;
         }
 
         public void OnDamage(long damage)
         {
             nowStat.hp -= damage;
-            onDamage?.Invoke();
+            LocalPacketReceiver.OnMonsterAttacked(Id, damage);
 
             if (nowStat.hp <= 0)
                 OnDead();
@@ -62,7 +60,7 @@ namespace LocalServerC
 
         protected void OnDead()
         {
-            onDead?.Invoke();
+            LocalPacketReceiver.OnMonsterDead(Id);
         }
     }
 }
