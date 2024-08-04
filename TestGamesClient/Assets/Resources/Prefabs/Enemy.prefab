@@ -832,7 +832,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 2
+  m_Radius: 4
 --- !u!114 &652789272851734516
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2874,6 +2874,7 @@ GameObject:
   - component: {fileID: 4379762317536405626}
   - component: {fileID: 2341549517984341407}
   - component: {fileID: 1315264960125965518}
+  - component: {fileID: 6778639983343994791}
   m_Layer: 7
   m_Name: Enemy
   m_TagString: Untagged
@@ -2973,6 +2974,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60441767233bfee49b2deb7b7f780be0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Id: 0
   detectTrigger: {fileID: 652789272851734516}
   attackTrigger: {fileID: 8120769351566523936}
   sprites: {fileID: 2127025195067651263}
@@ -2981,6 +2983,7 @@ MonoBehaviour:
   attackedMat: {fileID: 2100000, guid: 601fe16bd3d1a204f90c740afffce5f4, type: 2}
   knockBackDuration: 0.25
   attackDelay: 0.3
+  target: {fileID: 0}
 --- !u!114 &1315264960125965518
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2997,6 +3000,18 @@ MonoBehaviour:
   correctionDis: 0.1
   stopDis: 0.004
   desPos: {x: 0, y: 0, z: 0}
+--- !u!114 &6778639983343994791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8492015472669082020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aef856c029824e5439496580a8e1001d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8640370788436013804
 GameObject:
   m_ObjectHideFlags: 0
