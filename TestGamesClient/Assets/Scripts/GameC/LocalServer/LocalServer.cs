@@ -6,6 +6,8 @@ namespace LocalServerC
 {
     public class LocalServer : MonoBehaviour
     {
+        List<Monster> monsterList;
+
 
     }
 }
