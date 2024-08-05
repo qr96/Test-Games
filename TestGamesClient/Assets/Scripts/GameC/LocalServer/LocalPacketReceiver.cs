@@ -17,7 +17,10 @@ public class LocalPacketReceiver
         var monster = monsterObj.GetComponent<EnemyC>();
 
         if (monster != null)
+        {
             monster.OnDamage(damage);
+            ManagersC.ui.GetLayout<UILayoutFieldOverlay>().ShowDamage(damage, monster.transform.position);
+        }
     }
 
     public static void OnMonsterDead(int id)
