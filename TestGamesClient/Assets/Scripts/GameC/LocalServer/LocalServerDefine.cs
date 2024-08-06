@@ -30,6 +30,20 @@ namespace LocalServerC
         }
     }
 
+    public class PlayerInfo
+    {
+        public string name;
+        public int level;
+        public long exp;
+
+        public PlayerInfo()
+        {
+            name = "None";
+            level = 1;
+            exp = 0;
+        }
+    }
+
     public class Monster : IDamageable
     {
         public int Id;
@@ -61,6 +75,7 @@ namespace LocalServerC
         protected void OnDead()
         {
             LocalPacketReceiver.OnMonsterDead(Id);
+            LocalServer.Instance.AddExp(10);
         }
     }
 }

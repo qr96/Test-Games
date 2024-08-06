@@ -1,3 +1,4 @@
+using LocalServerC;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,5 +31,10 @@ public class LocalPacketReceiver
 
         if (monster != null)
             monster.OnDead();
+    }
+
+    public static void OnUpdatePlayerInfo(PlayerInfo info)
+    {
+        ManagersC.ui.GetLayout<UILayoutStatus>().SetExpGuage(info.level * 100, info.exp);
     }
 }
