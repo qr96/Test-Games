@@ -57,13 +57,16 @@ public class EnemyC : MonoBehaviour, IDamageableC, IPushableC
         sm.SetEvent(State.Attack, StateAttackEnter, StateAttackUpdate);
         sm.SetEvent(State.Attacked, StateAttackedEnter);
         sm.SetEvent(State.Dead, StateDeadEnter);
-
-        sm.SetState(State.Respawn);
     }
 
     private void Update()
     {
         sm.Update();
+    }
+
+    public void Respawn()
+    {
+        sm.SetState(State.Respawn);
     }
 
     public int GetId()
@@ -201,6 +204,8 @@ public class EnemyC : MonoBehaviour, IDamageableC, IPushableC
         attackTrigger.gameObject.SetActive(false);
         target = null;
         attackTarget = null;
+        SetAttackedMaterial(false);
+        Invoke("OnEndDeadState", 1f);
     }
 
     void SetAttackedMaterial(bool attacked)
@@ -231,5 +236,13 @@ public class EnemyC : MonoBehaviour, IDamageableC, IPushableC
             foreach (var sr in sprites._pantList)
                 sr.material = normalMat;
         }
+    }
+
+    void OnEndDeadState()
+    {
+        var id = GetComponent<SpawnedC>().GetId();
+        animator.Rebind();
+        gameObject.SetActive(false);
+        ManagersC.obj.RemoveMonster(id);
     }
 }

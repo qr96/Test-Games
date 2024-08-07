@@ -7,9 +7,11 @@ public class LocalPacketReceiver
 {
     public static void OnRespawnMonster(int id, Vector2 position)
     {
-        var monster = ManagersC.obj.SpawnMonster(id);
+        var monsterSpawn = ManagersC.obj.SpawnMonster(id);
+        var monster = monsterSpawn.GetComponent<EnemyC>();
         monster.transform.position = position;
-        monster.SetActive(true);
+        monster.gameObject.SetActive(true);
+        monster.Respawn();
     }
 
     public static void OnMonsterAttacked(int id, long damage)

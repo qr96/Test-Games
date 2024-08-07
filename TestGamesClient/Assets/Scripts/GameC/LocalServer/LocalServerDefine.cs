@@ -63,6 +63,11 @@ namespace LocalServerC
             this.position = position;
         }
 
+        public void Respawn(Stat stat)
+        {
+            nowStat.Set(stat);
+        }
+
         public void OnDamage(long damage)
         {
             nowStat.hp -= damage;
@@ -74,8 +79,7 @@ namespace LocalServerC
 
         protected void OnDead()
         {
-            LocalPacketReceiver.OnMonsterDead(Id);
-            LocalServer.Instance.AddExp(10);
+            LocalServer.Instance.OnDeadMonster(Id);
         }
     }
 }
