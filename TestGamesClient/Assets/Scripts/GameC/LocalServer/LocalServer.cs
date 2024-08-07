@@ -12,6 +12,7 @@ namespace LocalServerC
         Dictionary<int, Stat> stats = new Dictionary<int, Stat>();
 
         Stat userStat;
+        Stat nowStat;
         PlayerInfo playerInfo;
 
         int idCounter = 0;
@@ -22,6 +23,7 @@ namespace LocalServerC
 
             stats.Add(0, new Stat() { attack = 10, hp = 30 });
             userStat = new Stat() { attack = 10, hp = 100 };
+            nowStat = userStat.DeepCopy();
             playerInfo = new PlayerInfo();
         }
 
@@ -38,7 +40,7 @@ namespace LocalServerC
                 }
             }
 
-            LocalPacketReceiver.OnUpdatePlayerInfo(playerInfo);
+            LocalPacketReceiver.OnUpdatePlayerInfo(playerInfo, userStat, nowStat);
         }
 
         public void AttackMonster(int id)
@@ -54,7 +56,7 @@ namespace LocalServerC
                 playerInfo.exp -= playerInfo.level * 100;
                 playerInfo.level++;
             }
-            LocalPacketReceiver.OnUpdatePlayerInfo(playerInfo);
+            LocalPacketReceiver.OnUpdatePlayerInfo(playerInfo, userStat, nowStat);
         }
     }
 }

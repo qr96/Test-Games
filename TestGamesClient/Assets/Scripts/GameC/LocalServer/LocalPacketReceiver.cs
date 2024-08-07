@@ -33,8 +33,11 @@ public class LocalPacketReceiver
             monster.OnDead();
     }
 
-    public static void OnUpdatePlayerInfo(PlayerInfo info)
+    public static void OnUpdatePlayerInfo(PlayerInfo info, Stat userStat, Stat nowStat)
     {
-        ManagersC.ui.GetLayout<UILayoutStatus>().SetExpGuage(info.level * 100, info.exp);
+        var uilayoutStatus = ManagersC.ui.GetLayout<UILayoutStatus>();
+        uilayoutStatus.SetLevel(info.level);
+        uilayoutStatus.SetExpGuage(info.level * 100, info.exp);
+        uilayoutStatus.SetHpGuage(userStat.hp, nowStat.hp);
     }
 }
