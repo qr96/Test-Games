@@ -28,6 +28,7 @@ public class EnemyC : MonoBehaviour, IDamageableC, IPushableC
     IDamageableC attackTarget;
 
     DateTime attackEndTime;
+    DateTime deadEndTime;
     bool dead = false;
 
     enum State
@@ -56,7 +57,7 @@ public class EnemyC : MonoBehaviour, IDamageableC, IPushableC
         sm.SetEvent(State.Move, StateMoveEnter, StateMoveUpdate);
         sm.SetEvent(State.Attack, StateAttackEnter, StateAttackUpdate);
         sm.SetEvent(State.Attacked, StateAttackedEnter);
-        sm.SetEvent(State.Dead, StateDeadEnter);
+        sm.SetEvent(State.Dead, StateDeadEnter, StateDeadUpdate);
     }
 
     private void Update()
@@ -115,6 +116,9 @@ public class EnemyC : MonoBehaviour, IDamageableC, IPushableC
         target = null;
         attackTarget = null;
         sm.SetState(State.Idle);
+        deadEndTime = DateTime.MaxValue;
+        attackEndTime = DateTime.MaxValue;
+        dead = false;
     }
 
     void StateIdleEnter(State prevState)
@@ -129,6 +133,8 @@ public class EnemyC : MonoBehaviour, IDamageableC, IPushableC
             sm.SetState(State.Attack);
         else if (target != null)
             sm.SetState(State.Move);
+        else if (dead)
+            sm.SetState(State.Dead);
     }
 
     void StateMoveEnter(State prevState)
@@ -163,7 +169,10 @@ public class EnemyC : MonoBehaviour, IDamageableC, IPushableC
     void StateAttackUpdate()
     {
         if (DateTime.Now > attackEndTime)
+        {
+            attackEndTime = DateTime.MaxValue;
             sm.SetState(State.Idle);
+        }
     }
 
     void StateAttackedEnter(State prevState)
@@ -205,7 +214,17 @@ public class EnemyC : MonoBehaviour, IDamageableC, IPushableC
         target = null;
         attackTarget = null;
         SetAttackedMaterial(false);
-        Invoke("OnEndDeadState", 1f);
+        deadEndTime = DateTime.Now.AddSeconds(1);
+        attackEndTime = DateTime.MaxValue;
+    }
+
+    void StateDeadUpdate()
+    {
+        if (DateTime.Now > deadEndTime)
+        {
+            deadEndTime = DateTime.MaxValue;
+            OnEndDeadState();
+        }
     }
 
     void SetAttackedMaterial(bool attacked)
@@ -240,6 +259,7 @@ public class EnemyC : MonoBehaviour, IDamageableC, IPushableC
 
     void OnEndDeadState()
     {
+        Debug.Log("OnEndDead");
         var id = GetComponent<SpawnedC>().GetId();
         animator.Rebind();
         gameObject.SetActive(false);

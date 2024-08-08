@@ -53,7 +53,6 @@ namespace LocalServerC
         {
             if (DateTime.Now >= respawnTime)
             {
-                respawnTime = DateTime.MaxValue;
                 while (monsterDeadList.Count > 0)
                 {
                     var respawnId = monsterDeadList.Pop();
@@ -61,6 +60,7 @@ namespace LocalServerC
                     monster.Respawn(stats[0]);
                     LocalPacketReceiver.OnRespawnMonster(monster.Id, monster.position);
                 }
+                respawnTime = DateTime.MaxValue;
             }
         }
 
