@@ -35,12 +35,14 @@ namespace LocalServerC
         public string name;
         public int level;
         public long exp;
+        public long money;
 
         public PlayerInfo()
         {
             name = "None";
             level = 1;
             exp = 0;
+            money = 0;
         }
     }
 

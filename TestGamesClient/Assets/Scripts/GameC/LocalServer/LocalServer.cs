@@ -74,7 +74,10 @@ namespace LocalServerC
             if (monsterDeadList.Count <= 0)
                 respawnTime = DateTime.Now.AddSeconds(10);
             monsterDeadList.Push(id);
+
+            playerInfo.money += 100;
             AddExp(10);
+
             LocalPacketReceiver.OnMonsterDead(id);
         }
 
