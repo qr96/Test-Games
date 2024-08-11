@@ -49,5 +49,7 @@ public class LocalPacketReceiver
     public static void OnResultEnhance(int result, int id, Equipment equipment)
     {
         ManagersC.ui.GetPopup<UIPopupEnhancement>().SetPopup(equipment);
+        if (result == 1)
+            ManagersC.ui.ShowPopup<UIPopupMessage>().SetPopup("안내", "보유 머니가 부족합니다.");
     }
 }

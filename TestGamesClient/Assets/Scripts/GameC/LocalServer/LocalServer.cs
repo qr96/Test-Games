@@ -90,17 +90,20 @@ namespace LocalServerC
         {
             var success = EquipmentTable.GetSuccessPercenet(equipments[id].level);
             var destroyed = EquipmentTable.GetDestroyPercent(equipments[id].level);
+            var price = EquipmentTable.GetEnhancePrice(equipments[id]);
             var rand = UnityEngine.Random.Range(0f, 1f);
             var result = 0;
 
-            if (rand < success)
+            if (price > playerInfo.money)
                 result = 1;
-            else if (rand < success + destroyed)
+            else if (rand < success)
                 result = 2;
+            else if (rand < success + destroyed)
+                result = 3;
 
-            if (result == 1)
+            if (result == 2)
                 equipments[id].level++;
-            else if (result == 2)
+            else if (result == 3)
                 equipments[id].level = 0;
 
             LocalPacketReceiver.OnResultEnhance(result, id, equipments[id]);
