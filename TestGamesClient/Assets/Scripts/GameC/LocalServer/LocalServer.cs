@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 
 namespace LocalServerC
@@ -66,7 +65,10 @@ namespace LocalServerC
 
         public void AttackMonster(int id)
         {
-            monsters[id].OnDamage(userStat.attack);
+            var coefficient = UnityEngine.Random.Range(0.3f, 1f);
+            var damage = (long)(userStat.attack * coefficient);
+
+            monsters[id].OnDamage(damage);
         }
 
         public void OnDeadMonster(int id)
