@@ -9,6 +9,15 @@ public class UILayoutStatus : UILayout
     public TMP_Text moneyTmp;
     public UIElementGuageBar hpGuage;
     public UIElementGuageBar expGuage;
+    public KButton equipmentBtn;
+
+    private void Awake()
+    {
+        equipmentBtn.onClick.AddListener(() =>
+        {
+            ManagersC.ui.ShowPopup<UIPopupEnhancement>();
+        });
+    }
 
     public void SetExpGuage(long max, long now)
     {

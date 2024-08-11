@@ -10,4 +10,9 @@ public class LocalPacketSender
     {
         server.AttackMonster(id);
     }
+
+    public static void SendEnhanceEquipment(int equipId)
+    {
+        server.EnhanceEquipment(equipId);
+    }
 }

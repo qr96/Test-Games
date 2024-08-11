@@ -87,16 +87,39 @@ namespace LocalServerC
 
     public class Equipment
     {
-        public int Id;
         public int type;
         public int level;
     }
 
-    public static class DamageCalculator
+    public static class EquipmentTable
     {
-        public static long GetEquipmentDamage(Equipment equipment)
+        public static Stat GetStat(Equipment equipment)
         {
-            return 10 + equipment.level;
+            var stat = new Stat();
+            stat.attack = equipment.level + 10;
+            return stat;
+        }
+
+        public static Stat GetStatNextLevel(Equipment equipment)
+        {
+            var stat = new Stat();
+            stat.attack = equipment.level + 1 + 10;
+            return stat;
+        }
+
+        public static float GetSuccessPercenet(int level)
+        {
+            return 0.7f;
+        }
+
+        public static float GetDestroyPercent(int level)
+        {
+            return 0.05f;
+        }
+
+        public static long GetEnhancePrice(Equipment equipment)
+        {
+            return (equipment.level + 1) * 1000;
         }
     }
 }

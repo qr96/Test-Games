@@ -17,7 +17,7 @@ namespace LocalServerC
         Stat userStat;
         Stat nowStat;
         PlayerInfo playerInfo;
-        Equipment weapon;
+        Dictionary<int, Equipment> equipments = new Dictionary<int, Equipment>();
 
         DateTime respawnTime = DateTime.MaxValue;
 
@@ -31,7 +31,7 @@ namespace LocalServerC
             userStat = new Stat() { attack = 10, hp = 100 };
             nowStat = userStat.DeepCopy();
             playerInfo = new PlayerInfo();
-            weapon = new Equipment() { Id = 1, type = 1, level = 1 };
+            equipments.Add(0, new Equipment() { type = 1, level = 0 });
         }
 
         private void Start()
@@ -47,7 +47,7 @@ namespace LocalServerC
                 }
             }
 
-            LocalPacketReceiver.OnUpdatePlayerInfo(playerInfo, userStat, nowStat);
+            LocalPacketReceiver.OnUpdatePlayerInfo(playerInfo, userStat, nowStat, equipments);
         }
 
         private void Update()
@@ -68,7 +68,7 @@ namespace LocalServerC
         public void AttackMonster(int id)
         {
             var coefficient = UnityEngine.Random.Range(0.3f, 1f);
-            var attack = userStat.attack + DamageCalculator.GetEquipmentDamage(weapon);
+            var attack = userStat.attack + EquipmentTable.GetStat(equipments[0]).attack;
             var damage = (long)(attack * coefficient);
 
             monsters[id].OnDamage(damage);
@@ -86,6 +86,26 @@ namespace LocalServerC
             LocalPacketReceiver.OnMonsterDead(id);
         }
 
+        public void EnhanceEquipment(int id)
+        {
+            var success = EquipmentTable.GetSuccessPercenet(equipments[id].level);
+            var destroyed = EquipmentTable.GetDestroyPercent(equipments[id].level);
+            var rand = UnityEngine.Random.Range(0f, 1f);
+            var result = 0;
+
+            if (rand < success)
+                result = 1;
+            else if (rand < success + destroyed)
+                result = 2;
+
+            if (result == 1)
+                equipments[id].level++;
+            else if (result == 2)
+                equipments[id].level = 0;
+
+            LocalPacketReceiver.OnResultEnhance(result, id, equipments[id]);
+        }
+
         void AddExp(long exp)
         {
             playerInfo.exp += exp;
@@ -94,7 +114,7 @@ namespace LocalServerC
                 playerInfo.exp -= playerInfo.level * 100;
                 playerInfo.level++;
             }
-            LocalPacketReceiver.OnUpdatePlayerInfo(playerInfo, userStat, nowStat);
+            LocalPacketReceiver.OnUpdatePlayerInfo(playerInfo, userStat, nowStat, equipments);
         }
     }
 }

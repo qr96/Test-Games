@@ -35,12 +35,19 @@ public class LocalPacketReceiver
             monster.OnDead();
     }
 
-    public static void OnUpdatePlayerInfo(PlayerInfo info, Stat userStat, Stat nowStat)
+    public static void OnUpdatePlayerInfo(PlayerInfo info, Stat userStat, Stat nowStat, Dictionary<int, Equipment> equipments)
     {
         var uilayoutStatus = ManagersC.ui.GetLayout<UILayoutStatus>();
         uilayoutStatus.SetLevel(info.level);
         uilayoutStatus.SetMoney(info.money);
         uilayoutStatus.SetExpGuage(info.level * 100, info.exp);
         uilayoutStatus.SetHpGuage(userStat.hp, nowStat.hp);
+
+        ManagersC.ui.GetPopup<UIPopupEnhancement>().SetPopup(equipments[0]);
+    }
+
+    public static void OnResultEnhance(int result, int id, Equipment equipment)
+    {
+        ManagersC.ui.GetPopup<UIPopupEnhancement>().SetPopup(equipment);
     }
 }
