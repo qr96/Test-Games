@@ -17,6 +17,7 @@ namespace LocalServerC
         Stat userStat;
         Stat nowStat;
         PlayerInfo playerInfo;
+        Equipment weapon;
 
         DateTime respawnTime = DateTime.MaxValue;
 
@@ -30,6 +31,7 @@ namespace LocalServerC
             userStat = new Stat() { attack = 10, hp = 100 };
             nowStat = userStat.DeepCopy();
             playerInfo = new PlayerInfo();
+            weapon = new Equipment() { Id = 1, type = 1, level = 1 };
         }
 
         private void Start()
@@ -66,7 +68,8 @@ namespace LocalServerC
         public void AttackMonster(int id)
         {
             var coefficient = UnityEngine.Random.Range(0.3f, 1f);
-            var damage = (long)(userStat.attack * coefficient);
+            var attack = userStat.attack + DamageCalculator.GetEquipmentDamage(weapon);
+            var damage = (long)(attack * coefficient);
 
             monsters[id].OnDamage(damage);
         }

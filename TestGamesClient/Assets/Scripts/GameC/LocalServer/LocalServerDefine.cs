@@ -84,4 +84,19 @@ namespace LocalServerC
             LocalServer.Instance.OnDeadMonster(Id);
         }
     }
+
+    public class Equipment
+    {
+        public int Id;
+        public int type;
+        public int level;
+    }
+
+    public static class DamageCalculator
+    {
+        public static long GetEquipmentDamage(Equipment equipment)
+        {
+            return 10 + equipment.level;
+        }
+    }
 }
