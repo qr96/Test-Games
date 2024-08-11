@@ -6,6 +6,7 @@ using UnityEngine;
 public class UILayoutStatus : UILayout
 {
     public TMP_Text levelTmp;
+    public TMP_Text moneyTmp;
     public UIElementGuageBar hpGuage;
     public UIElementGuageBar expGuage;
 
@@ -18,6 +19,11 @@ public class UILayoutStatus : UILayout
     public void SetLevel(int level)
     {
         levelTmp.text = level.ToString();
+    }
+
+    public void SetMoney(long money)
+    {
+        moneyTmp.text = KUtil.DecimalSeperator(money);
     }
 
     public void SetHpGuage(long max, long now)

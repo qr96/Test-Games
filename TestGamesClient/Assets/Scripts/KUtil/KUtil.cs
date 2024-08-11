@@ -17,3 +17,13 @@ public static class Extension
         return new Vector3(vector.x, vector.y, z);
     }
 }
+
+public static class KUtil
+{
+    public static string DecimalSeperator(long money)
+    {
+        if (money == 0)
+            return "0";
+        return money.ToString("#,##0");
+    }
+}
