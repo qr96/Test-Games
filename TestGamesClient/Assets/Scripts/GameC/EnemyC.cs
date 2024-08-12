@@ -16,6 +16,7 @@ public class EnemyC : MonoBehaviour, IDamageableC, IPushableC
 
     public float knockBackDuration;
     public float attackDelay;
+    public float damageDelay;
 
     KStateMachine<State> sm = new KStateMachine<State>();
 
@@ -27,6 +28,7 @@ public class EnemyC : MonoBehaviour, IDamageableC, IPushableC
     public Transform target;
     IDamageableC attackTarget;
 
+    DateTime damageDelayEnd;
     DateTime attackEndTime;
     DateTime deadEndTime;
     bool dead = false;
@@ -164,15 +166,20 @@ public class EnemyC : MonoBehaviour, IDamageableC, IPushableC
         rigidMover.enabled = false;
         animator.SetTrigger("Attack");
         attackEndTime = DateTime.Now.AddSeconds(attackDelay);
+        damageDelayEnd = DateTime.Now.AddSeconds(damageDelay);
     }
 
     void StateAttackUpdate()
     {
-        if (DateTime.Now > attackEndTime)
+        if (DateTime.Now > damageDelayEnd)
         {
-            attackEndTime = DateTime.MaxValue;
+            damageDelayEnd = DateTime.MaxValue;
             if (target != null)
                 LocalPacketSender.SendOnPlayerDamaged(GetId());
+        }
+        else if (DateTime.Now > attackEndTime)
+        {
+            attackEndTime = DateTime.MaxValue;
             sm.SetState(State.Idle);
         }
     }
