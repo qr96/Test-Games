@@ -37,7 +37,7 @@ public class UILayoutStatus : UILayout
 
     public void SetHpGuage(long max, long now)
     {
-        var percent = (float)(now / max);
+        var percent = (float)now / max;
         hpGuage.SetGuage(percent, $"{now}/{max}");
     }
 }
