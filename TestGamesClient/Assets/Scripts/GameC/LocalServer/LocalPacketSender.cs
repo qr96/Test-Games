@@ -15,4 +15,9 @@ public class LocalPacketSender
     {
         server.EnhanceEquipment(equipId);
     }
+
+    public static void SendOnPlayerDamaged(int id)
+    {
+        server.OnPlayerDamaged(id);
+    }
 }

@@ -35,6 +35,11 @@ public class LocalPacketReceiver
             monster.OnDead();
     }
 
+    public static void OnPlayerDamaged(long damage)
+    {
+
+    }
+
     public static void OnUpdatePlayerInfo(PlayerInfo info, Stat userStat, Stat nowStat, Dictionary<int, Equipment> equipments)
     {
         var uilayoutStatus = ManagersC.ui.GetLayout<UILayoutStatus>();

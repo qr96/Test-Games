@@ -171,6 +171,8 @@ public class EnemyC : MonoBehaviour, IDamageableC, IPushableC
         if (DateTime.Now > attackEndTime)
         {
             attackEndTime = DateTime.MaxValue;
+            if (target != null)
+                LocalPacketSender.SendOnPlayerDamaged(GetId());
             sm.SetState(State.Idle);
         }
     }

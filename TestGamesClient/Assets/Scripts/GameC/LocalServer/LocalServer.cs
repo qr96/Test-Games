@@ -86,6 +86,15 @@ namespace LocalServerC
             LocalPacketReceiver.OnMonsterDead(id);
         }
 
+        public void OnPlayerDamaged(int id)
+        {
+            var damage = monsters[id].nowStat.attack;
+            nowStat.hp -= damage;
+
+            LocalPacketReceiver.OnPlayerDamaged(damage);
+            LocalPacketReceiver.OnUpdatePlayerInfo(playerInfo, userStat, nowStat, equipments);
+        }
+
         public void EnhanceEquipment(int id)
         {
             var success = EquipmentTable.GetSuccessPercenet(equipments[id].level);
