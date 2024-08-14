@@ -21,7 +21,7 @@ public class EnemyC : MonoBehaviour, IDamageableC, IPushableC
     KStateMachine<State> sm = new KStateMachine<State>();
 
     SpawnedC spawned;
-    Collider2D collider;
+    Collider2D col;
     Rigidbody2D rigid;
     RigidMoverC rigidMover;
 
@@ -47,7 +47,7 @@ public class EnemyC : MonoBehaviour, IDamageableC, IPushableC
     private void Awake()
     {
         spawned = GetComponent<SpawnedC>();
-        collider = GetComponent<Collider2D>();
+        col = GetComponent<Collider2D>();
         rigid = GetComponent<Rigidbody2D>();
         rigidMover = GetComponent<RigidMoverC>();
 
@@ -99,17 +99,19 @@ public class EnemyC : MonoBehaviour, IDamageableC, IPushableC
 
     void OnEnterAttackTrigger(Collider2D collider)
     {
-        attackTarget = collider.gameObject.GetComponent<IDamageableC>();
+        if (collider.CompareTag("Player"))
+            attackTarget = collider.gameObject.GetComponent<IDamageableC>();
     }
 
     void OnExitAttackTrigger(Collider2D collider)
     {
-        attackTarget = null;
+        if (collider.CompareTag("Player"))
+            attackTarget = null;
     }
 
     void StateRespawnEnter(State prevState)
     {
-        collider.enabled = true;
+        col.enabled = true;
         rigidMover.enabled = true;
         animator.SetBool("Moving", false);
         animator.SetBool("Dead", false);
@@ -213,7 +215,7 @@ public class EnemyC : MonoBehaviour, IDamageableC, IPushableC
 
     void StateDeadEnter(State prevState)
     {
-        collider.enabled = false;
+        col.enabled = false;
         rigidMover.enabled = false;
         rigid.velocity = Vector3.zero;
         animator.SetBool("Moving", false);
@@ -246,10 +248,8 @@ public class EnemyC : MonoBehaviour, IDamageableC, IPushableC
 
     void OnEndDeadState()
     {
-        Debug.Log("OnEndDead");
-        var id = GetComponent<SpawnedC>().GetId();
         animator.Rebind();
         gameObject.SetActive(false);
-        ManagersC.obj.RemoveMonster(id);
+        ManagersC.obj.RemoveMonster(GetId());
     }
 }
