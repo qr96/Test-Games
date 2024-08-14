@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IDamageableC
 {
-    public void OnDamage(long damage);
+    public void OnDamage();
 }

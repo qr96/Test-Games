@@ -16,7 +16,7 @@ public class MyPlayerB : MonoBehaviour, IDamageableC
     public float attackDelay = 1f;
     public float pushPower = 3f;
 
-    HashSet<EnemyC> targets = new HashSet<EnemyC>();
+    HashSet<BaseEnemyC> targets = new HashSet<BaseEnemyC>();
 
     Vector2 input;
     DateTime attackEnd;
@@ -59,7 +59,7 @@ public class MyPlayerB : MonoBehaviour, IDamageableC
 
     void OnAttackStart(Collider2D collider)
     {
-        var target = collider.gameObject.GetComponent<EnemyC>();
+        var target = collider.gameObject.GetComponent<BaseEnemyC>();
 
         if (target != null)
             targets.Add(target);
@@ -69,7 +69,7 @@ public class MyPlayerB : MonoBehaviour, IDamageableC
 
     void OnAttackEnd(Collider2D collider)
     {
-        targets.Remove(collider.GetComponent<EnemyC>());
+        targets.Remove(collider.GetComponent<BaseEnemyC>());
         if (targets.Count == 0)
             isOnAttack = false;
     }
@@ -90,9 +90,9 @@ public class MyPlayerB : MonoBehaviour, IDamageableC
             var targetId = target.GetId();
             LocalPacketSender.SendAttack(targetId);
 
-            target.OnDamage(10);
+            target.OnDamage();
             target.OnPush(CalculatePushVector(transform.position, target.transform.position) * pushPower);
-            target.SetTartget(transform);
+            target.SetTarget(transform);
         }
     }
 
@@ -104,7 +104,7 @@ public class MyPlayerB : MonoBehaviour, IDamageableC
         return pushVector;
     }
 
-    public void OnDamage(long damage)
+    public void OnDamage()
     {
         //throw new NotImplementedException();
     }

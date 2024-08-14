@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class EnemyC : MonoBehaviour, IDamageableC, IPushableC
+public class EnemyC : BaseEnemyC
 {
     public TriggerEvent2D detectTrigger;
     public TriggerEvent2D attackTrigger;
@@ -51,7 +51,7 @@ public class EnemyC : MonoBehaviour, IDamageableC, IPushableC
         rigid = GetComponent<Rigidbody2D>();
         rigidMover = GetComponent<RigidMoverC>();
 
-        detectTrigger.SetTriggerEvent((col) => SetTartget(col.transform));
+        detectTrigger.SetTriggerEvent((col) => SetTarget(col.transform));
         attackTrigger.SetTriggerEvent(OnEnterAttackTrigger, OnExitAttackTrigger);
 
         sm.SetEvent(State.Respawn, StateRespawnEnter);
@@ -67,34 +67,34 @@ public class EnemyC : MonoBehaviour, IDamageableC, IPushableC
         sm.Update();
     }
 
-    public void Respawn()
+    public override void OnSpawn()
     {
         sm.SetState(State.Respawn);
     }
 
-    public int GetId()
-    {
-        return spawned.GetId();
-    }
-
-    public void OnDamage(long damage)
+    public override void OnDamage()
     {
         sm.SetState(State.Attacked);
     }
 
-    public void OnPush(Vector2 pushVector)
+    public override void OnPush(Vector2 pushVector)
     {
         rigid.AddForce(pushVector, ForceMode2D.Impulse);
     }
 
-    public void OnDead()
+    public override void OnDead()
     {
         dead = true;
     }
 
-    public void SetTartget(Transform target)
+    public override void SetTarget(Transform target)
     {
         this.target = target;
+    }
+
+    public override int GetId()
+    {
+        return spawned.GetId();
     }
 
     void OnEnterAttackTrigger(Collider2D collider)
