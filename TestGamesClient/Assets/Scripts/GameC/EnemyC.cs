@@ -9,6 +9,7 @@ public class EnemyC : MonoBehaviour, IDamageableC, IPushableC
     public TriggerEvent2D attackTrigger;
 
     public SPUM_SpriteList sprites;
+    public SpriteRendererListC renderers;
     public Animator animator;
 
     public Material normalMat;
@@ -239,31 +240,9 @@ public class EnemyC : MonoBehaviour, IDamageableC, IPushableC
     void SetAttackedMaterial(bool attacked)
     {
         if (attacked)
-        {
-            foreach (var sr in sprites._hairList)
-                sr.material = attackedMat;
-            foreach (var sr in sprites._bodyList)
-                sr.material = attackedMat;
-            foreach (var sr in sprites._armorList)
-                sr.material = attackedMat;
-            foreach (var sr in sprites._clothList)
-                sr.material = attackedMat;
-            foreach (var sr in sprites._pantList)
-                sr.material = attackedMat;
-        }
+            renderers.SetMaterial(attackedMat);
         else
-        {
-            foreach (var sr in sprites._hairList)
-                sr.material = normalMat;
-            foreach (var sr in sprites._bodyList)
-                sr.material = normalMat;
-            foreach (var sr in sprites._armorList)
-                sr.material = normalMat;
-            foreach (var sr in sprites._clothList)
-                sr.material = normalMat;
-            foreach (var sr in sprites._pantList)
-                sr.material = normalMat;
-        }
+            renderers.SetMaterial(normalMat);
     }
 
     void OnEndDeadState()

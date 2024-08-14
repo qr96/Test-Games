@@ -268,7 +268,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: -0.2, y: 0}
   serializedVersion: 2
-  m_Radius: 0.6
+  m_Radius: 0.4
 --- !u!114 &8120769351566523936
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -438,6 +438,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1939019837406487320}
   - component: {fileID: 2127025195067651263}
+  - component: {fileID: 4308314647888482969}
   m_Layer: 7
   m_Name: Root
   m_TagString: Untagged
@@ -531,6 +532,44 @@ MonoBehaviour:
   - 
   _backListString:
   - 
+--- !u!114 &4308314647888482969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 859828035943462434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3210ebdf921993444a44639c3aae73c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRenders:
+  - {fileID: 7378656163084031465}
+  - {fileID: 9077940814323431605}
+  - {fileID: 5309675355611404303}
+  - {fileID: 8965572454109572679}
+  - {fileID: 533417961831733810}
+  - {fileID: 5997931226257378011}
+  - {fileID: 3662461928337147270}
+  - {fileID: 7810773544983261968}
+  - {fileID: 2821555137549652881}
+  - {fileID: 2633447793904851483}
+  - {fileID: 7121043279544446982}
+  - {fileID: 8644614886426387079}
+  - {fileID: 3953865228402474816}
+  - {fileID: 5483213450453101997}
+  - {fileID: 5523417478537749410}
+  - {fileID: 3029999301299519619}
+  - {fileID: 7266649724182815941}
+  - {fileID: 5935226646219949086}
+  - {fileID: 1699052139013749357}
+  - {fileID: 8506683557530538631}
+  - {fileID: 5951455755735903908}
+  - {fileID: 7077714173719001773}
+  - {fileID: 2408870553882692344}
+  - {fileID: 8960313128136479846}
+  - {fileID: 4173951194029745261}
 --- !u!1 &1023250479753222810
 GameObject:
   m_ObjectHideFlags: 0
@@ -2974,15 +3013,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60441767233bfee49b2deb7b7f780be0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Id: 0
   detectTrigger: {fileID: 652789272851734516}
   attackTrigger: {fileID: 8120769351566523936}
   sprites: {fileID: 2127025195067651263}
+  renderers: {fileID: 4308314647888482969}
   animator: {fileID: 7984537526348294468}
   normalMat: {fileID: 2100000, guid: c5a65547d1edf4a9d882bd6cff83eda8, type: 2}
   attackedMat: {fileID: 2100000, guid: 601fe16bd3d1a204f90c740afffce5f4, type: 2}
   knockBackDuration: 0.25
-  attackDelay: 0.3
+  attackDelay: 1
+  damageDelay: 0.3
   target: {fileID: 0}
 --- !u!114 &1315264960125965518
 MonoBehaviour:
@@ -3012,6 +3052,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aef856c029824e5439496580a8e1001d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Id: 0
 --- !u!1 &8640370788436013804
 GameObject:
   m_ObjectHideFlags: 0
