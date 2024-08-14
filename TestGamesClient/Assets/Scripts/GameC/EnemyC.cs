@@ -8,7 +8,6 @@ public class EnemyC : MonoBehaviour, IDamageableC, IPushableC
     public TriggerEvent2D detectTrigger;
     public TriggerEvent2D attackTrigger;
 
-    public SPUM_SpriteList sprites;
     public SpriteRendererListC renderers;
     public Animator animator;
 
