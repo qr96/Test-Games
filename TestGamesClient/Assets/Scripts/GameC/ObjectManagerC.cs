@@ -4,16 +4,26 @@ using UnityEngine;
 
 public class ObjectManagerC : MonoBehaviour
 {
-    public SpawnedC monsterPrefab;
+    public List<SpawnedC> prefabs = new List<SpawnedC>();
 
     Dictionary<int, SpawnedC> idDic = new Dictionary<int, SpawnedC>();
+    Dictionary<int, Stack<SpawnedC>> pool = new Dictionary<int, Stack<SpawnedC>>();
 
-    public SpawnedC SpawnMonster(int id)
+    public SpawnedC SpawnMonster(int id, int typeId)
     {
-        if (!idDic.ContainsKey(id))
+        if (!pool.ContainsKey(typeId))
+            pool.Add(typeId, new Stack<SpawnedC>());
+
+        if (pool[typeId].Count > 0)
         {
-            var prefab = Instantiate(monsterPrefab);
-            prefab.SetId(id);
+            var prefab = pool[typeId].Pop();
+            prefab.SetId(id, typeId);
+            idDic.Add(id, prefab);
+        }
+        else
+        {
+            var prefab = Instantiate(prefabs[typeId]);
+            prefab.SetId(id, typeId);
             idDic.Add(id, prefab);
         }
 
@@ -34,6 +44,11 @@ public class ObjectManagerC : MonoBehaviour
     public void RemoveMonster(int id)
     {
         if (idDic.ContainsKey(id))
+        {
+            var typeId = idDic[id].GetTypeId();
+            pool[typeId].Push(idDic[id]);
             idDic[id].SetActive(false);
+            idDic.Remove(id);
+        }
     }
 }

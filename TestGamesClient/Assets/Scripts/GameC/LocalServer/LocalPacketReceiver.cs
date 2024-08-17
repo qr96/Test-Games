@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class LocalPacketReceiver
 {
-    public static void OnRespawnMonster(int id, Vector2 position)
+    public static void OnRespawnMonster(int id, int typeId, Vector2 position)
     {
-        var monsterSpawn = ManagersC.obj.SpawnMonster(id);
+        var monsterSpawn = ManagersC.obj.SpawnMonster(id, typeId);
         monsterSpawn.transform.position = position;
         monsterSpawn.gameObject.SetActive(true);
 

@@ -5,15 +5,22 @@ using UnityEngine;
 public class SpawnedC : MonoBehaviour
 {
     public int Id;
+    public int TypeId;
 
-    public void SetId(int id)
+    public void SetId(int id, int typeId)
     {
         Id = id;
+        TypeId = typeId;
     }
 
     public int GetId()
     {
         return Id;
+    }
+
+    public int GetTypeId()
+    {
+        return TypeId;
     }
 
     public void SetActive(bool active)

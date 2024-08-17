@@ -10,7 +10,6 @@ namespace LocalServerC
         public static LocalServer Instance;
 
         Dictionary<int, Monster> monsters = new Dictionary<int, Monster>();
-        Dictionary<int, Stat> stats = new Dictionary<int, Stat>();
 
         Stack<int> monsterDeadList = new Stack<int>();
 
@@ -27,8 +26,6 @@ namespace LocalServerC
         {
             Instance = this;
 
-            stats.Add(0, new Stat() { attack = 10, hp = 30 });
-            stats.Add(1, new Stat() { attack = 10, hp = 3000 });
             userStat = new Stat() { attack = 10, hp = 100 };
             nowStat = userStat.DeepCopy();
             playerInfo = new PlayerInfo();
@@ -41,17 +38,21 @@ namespace LocalServerC
             {
                 for (int j = 0; j < 4; j++)
                 {
-                    var monster = new Monster(idCounter++);
+                    var typeId = 0;
+                    var monster = new Monster(idCounter++, typeId);
                     monsters.Add(monster.Id, monster);
-                    monster.Spawn(stats[0], new Vector2(4 + i, -0.5f * j));
-                    LocalPacketReceiver.OnRespawnMonster(monster.Id, monster.position);
+                    monster.Spawn(MonsterTable.GetStat(typeId), new Vector2(8 + i, -0.5f * j));
+                    LocalPacketReceiver.OnRespawnMonster(monster.Id, monster.TypeId, monster.position);
                 }
             }
 
-            //var monster = new Monster(idCounter++);
-            //monsters.Add(monster.Id, monster);
-            //monster.Spawn(stats[1], new Vector2(14, 0));
-            //LocalPacketReceiver.OnRespawnMonster(monster.Id, monster.position);
+            {
+                var typeId = 1;
+                var monster = new Monster(idCounter++, typeId);
+                monsters.Add(monster.Id, monster);
+                monster.Spawn(MonsterTable.GetStat(typeId), new Vector2(14, 0));
+                LocalPacketReceiver.OnRespawnMonster(monster.Id, monster.TypeId, monster.position);
+            }
 
             for (int i = 0; i < 20; i++)
                 Debug.Log(PlayerTable.GetNeedExp(i));
@@ -67,8 +68,8 @@ namespace LocalServerC
                 {
                     var respawnId = monsterDeadList.Pop();
                     var monster = monsters[respawnId];
-                    monster.Respawn(stats[0]);
-                    LocalPacketReceiver.OnRespawnMonster(monster.Id, monster.position);
+                    monster.Respawn(MonsterTable.GetStat(monster.TypeId));
+                    LocalPacketReceiver.OnRespawnMonster(monster.Id, monster.TypeId, monster.position);
                 }
                 respawnTime = DateTime.MaxValue;
             }
