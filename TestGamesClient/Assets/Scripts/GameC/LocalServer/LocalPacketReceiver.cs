@@ -46,7 +46,7 @@ public class LocalPacketReceiver
         var uilayoutStatus = ManagersC.ui.GetLayout<UILayoutStatus>();
         uilayoutStatus.SetLevel(info.level);
         uilayoutStatus.SetMoney(info.money);
-        uilayoutStatus.SetExpGuage(info.level * 100, info.exp);
+        uilayoutStatus.SetExpGuage(PlayerTable.GetNeedExp(info.level), info.exp);
         uilayoutStatus.SetHpGuage(userStat.hp, nowStat.hp);
 
         ManagersC.ui.GetPopup<UIPopupEnhancement>().SetPopup(equipments[0]);

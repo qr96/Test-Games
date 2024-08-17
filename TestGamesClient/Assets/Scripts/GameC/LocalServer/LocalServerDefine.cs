@@ -122,4 +122,21 @@ namespace LocalServerC
             return (equipment.level + 1) * 1000;
         }
     }
+
+    public class PlayerTable
+    {
+        public static long GetNeedExp(int nowLevel)
+        {
+            var needExp = 0L;
+
+            if (nowLevel < 10)
+                needExp = (nowLevel + 1) * 10;
+            else if (nowLevel % 5 == 0)
+                needExp = GetNeedExp(nowLevel - 1) * 2;
+            else
+                needExp = (long)(GetNeedExp(nowLevel - 1) * 1.1D);
+
+            return needExp;
+        }
+    }
 }

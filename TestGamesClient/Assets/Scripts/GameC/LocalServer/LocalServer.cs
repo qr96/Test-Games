@@ -28,6 +28,7 @@ namespace LocalServerC
             Instance = this;
 
             stats.Add(0, new Stat() { attack = 10, hp = 30 });
+            stats.Add(1, new Stat() { attack = 10, hp = 3000 });
             userStat = new Stat() { attack = 10, hp = 100 };
             nowStat = userStat.DeepCopy();
             playerInfo = new PlayerInfo();
@@ -46,6 +47,14 @@ namespace LocalServerC
                     LocalPacketReceiver.OnRespawnMonster(monster.Id, monster.position);
                 }
             }
+
+            //var monster = new Monster(idCounter++);
+            //monsters.Add(monster.Id, monster);
+            //monster.Spawn(stats[1], new Vector2(14, 0));
+            //LocalPacketReceiver.OnRespawnMonster(monster.Id, monster.position);
+
+            for (int i = 0; i < 20; i++)
+                Debug.Log(PlayerTable.GetNeedExp(i));
 
             LocalPacketReceiver.OnUpdatePlayerInfo(playerInfo, userStat, nowStat, equipments);
         }
@@ -90,6 +99,7 @@ namespace LocalServerC
         {
             var damage = monsters[id].nowStat.attack;
             nowStat.hp -= damage;
+            if (nowStat.hp < 0) nowStat.hp = 0;
 
             LocalPacketReceiver.OnPlayerDamaged(damage);
             LocalPacketReceiver.OnUpdatePlayerInfo(playerInfo, userStat, nowStat, equipments);
@@ -121,10 +131,12 @@ namespace LocalServerC
         void AddExp(long exp)
         {
             playerInfo.exp += exp;
-            while (playerInfo.exp >= playerInfo.level * 100)
+            var needExp = PlayerTable.GetNeedExp(playerInfo.level);
+            while (playerInfo.exp >= needExp)
             {
-                playerInfo.exp -= playerInfo.level * 100;
+                playerInfo.exp -= needExp;
                 playerInfo.level++;
+                needExp = PlayerTable.GetNeedExp(playerInfo.level);
             }
             LocalPacketReceiver.OnUpdatePlayerInfo(playerInfo, userStat, nowStat, equipments);
         }
