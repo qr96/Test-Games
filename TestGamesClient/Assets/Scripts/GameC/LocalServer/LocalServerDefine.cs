@@ -49,13 +49,15 @@ namespace LocalServerC
     public class Monster : IDamageable
     {
         public int Id;
+        public int TypeId;
 
         public Stat nowStat;
         public Vector2 position;
 
-        public Monster(int id)
+        public Monster(int id, int typeId)
         {
             Id = id;
+            TypeId = typeId;
             nowStat = new Stat();
         }
 
@@ -137,6 +139,19 @@ namespace LocalServerC
                 needExp = (long)(GetNeedExp(nowLevel - 1) * 1.1D);
 
             return needExp;
+        }
+    }
+
+    public class MonsterTable
+    {
+        public static Stat GetStat(int typeId)
+        {
+            if (typeId == 0)
+                return new Stat() { attack = 5, hp = 30 };
+            else if (typeId == 1)
+                return new Stat() { attack = 10, hp = 500 };
+
+            return new Stat();
         }
     }
 }
