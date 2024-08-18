@@ -54,9 +54,6 @@ namespace LocalServerC
                 LocalPacketReceiver.OnRespawnMonster(monster.Id, monster.TypeId, monster.position);
             }
 
-            for (int i = 0; i < 20; i++)
-                Debug.Log(PlayerTable.GetNeedExp(i));
-
             LocalPacketReceiver.OnUpdatePlayerInfo(playerInfo, userStat, nowStat, equipments);
         }
 
