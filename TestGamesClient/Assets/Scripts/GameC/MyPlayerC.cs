@@ -80,6 +80,7 @@ public class MyPlayerB : MonoBehaviour, IDamageableC
         attackEnd = DateTime.Now.AddSeconds(attackDelay);
         animator.SetBool("Moving", false);
         animator.SetTrigger("Attack");
+        speed = 150f;
 
         yield return new WaitForSeconds(delay);
 
@@ -94,6 +95,7 @@ public class MyPlayerB : MonoBehaviour, IDamageableC
             target.OnPush(CalculatePushVector(transform.position, target.transform.position) * pushPower);
             target.SetTarget(transform);
         }
+        speed = 200f;
     }
 
     Vector2 CalculatePushVector(Vector2 myVector, Vector2 enemyVector)
