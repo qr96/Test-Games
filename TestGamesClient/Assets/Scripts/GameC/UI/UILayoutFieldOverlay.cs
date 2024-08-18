@@ -23,8 +23,8 @@ public class UILayoutFieldOverlay : UILayout
         damageIns.text = damage.ToString();
         damageIns.color = Color.white;
         damageIns.transform.localPosition = worldPosition;
-        
-        damageIns.transform.DOLocalMoveY(startPos.y + 2f, 1f);
+        damageIns.transform.SetAsLastSibling();
+        damageIns.transform.DOLocalMoveY(startPos.y + 1f, 1f);
         damageIns.DOFade(0f, 1f)
             .SetEase(Ease.InCirc)
             .OnComplete(() => damagePool.Push(damageIns));
