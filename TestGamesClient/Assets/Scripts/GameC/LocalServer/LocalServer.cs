@@ -59,17 +59,17 @@ namespace LocalServerC
 
         private void Update()
         {
-            if (DateTime.Now >= respawnTime)
-            {
-                while (monsterDeadList.Count > 0)
-                {
-                    var respawnId = monsterDeadList.Pop();
-                    var monster = monsters[respawnId];
-                    monster.Respawn(MonsterTable.GetStat(monster.TypeId));
-                    LocalPacketReceiver.OnRespawnMonster(monster.Id, monster.TypeId, monster.position);
-                }
-                respawnTime = DateTime.MaxValue;
-            }
+            //if (DateTime.Now >= respawnTime)
+            //{
+            //    while (monsterDeadList.Count > 0)
+            //    {
+            //        var respawnId = monsterDeadList.Pop();
+            //        var monster = monsters[respawnId];
+            //        monster.Respawn(MonsterTable.GetStat(monster.TypeId));
+            //        LocalPacketReceiver.OnRespawnMonster(monster.Id, monster.TypeId, monster.position);
+            //    }
+            //    respawnTime = DateTime.MaxValue;
+            //}
         }
 
         public void AttackMonster(int id)
