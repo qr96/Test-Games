@@ -74,6 +74,12 @@ namespace LocalServerC
 
         public void OnDamage(long damage)
         {
+            if (nowStat.hp <= 0)
+            {
+                Debug.LogError("Can't attack dead monster");
+                return;
+            }
+
             nowStat.hp -= damage;
             LocalPacketReceiver.OnMonsterAttacked(Id, damage);
 

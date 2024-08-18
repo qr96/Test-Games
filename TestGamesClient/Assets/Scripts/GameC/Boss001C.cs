@@ -34,6 +34,8 @@ public class Boss001C : BaseEnemyC
     DateTime deadEndTime;
     bool dead = false;
 
+    public int state;
+
     enum State
     {
         None = 0,
@@ -66,6 +68,7 @@ public class Boss001C : BaseEnemyC
     private void Update()
     {
         sm.Update();
+        state = (int)sm.GetState();
     }
 
     public override void OnSpawn()
@@ -182,7 +185,11 @@ public class Boss001C : BaseEnemyC
 
     void StateAttackUpdate()
     {
-        if (DateTime.Now > damageDelayEnd)
+        if (dead)
+        {
+            sm.SetState(State.Dead);
+        }
+        else if (DateTime.Now > damageDelayEnd)
         {
             damageDelayEnd = DateTime.MaxValue;
             if (target != null)
@@ -230,7 +237,7 @@ public class Boss001C : BaseEnemyC
         target = null;
         attackTarget = null;
         SetAttackedMaterial(false);
-        deadEndTime = DateTime.Now.AddSeconds(1);
+        deadEndTime = DateTime.Now.AddSeconds(0.3);
         attackEndTime = DateTime.MaxValue;
     }
 
