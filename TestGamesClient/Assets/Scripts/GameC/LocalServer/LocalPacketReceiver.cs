@@ -30,7 +30,7 @@ public class LocalPacketReceiver
     public static void OnMonsterDead(int id)
     {
         var monsterObj = ManagersC.obj.GetObject(id);
-        var monster = monsterObj.GetComponent<EnemyC>();
+        var monster = monsterObj.GetComponent<BaseEnemyC>();
 
         if (monster != null)
             monster.OnDead();
