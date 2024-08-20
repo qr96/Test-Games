@@ -34,25 +34,25 @@ namespace LocalServerC
 
         private void Start()
         {
-            for (int i = 0; i < 4; i++)
+            var mapInfo = MapInfoTable.GetMapInfo(1);
+            foreach (var item in mapInfo.infoList)
             {
-                for (int j = 0; j < 4; j++)
+                if (item.spawnType == SpawnType.Monster)
                 {
-                    var typeId = 0;
-                    var monster = new Monster(idCounter++, typeId);
+                    var monster = new Monster(idCounter++, item.typeId);
                     monsters.Add(monster.Id, monster);
-                    monster.Spawn(MonsterTable.GetStat(typeId), new Vector2(8 + i, -0.5f * j));
+                    monster.Spawn(MonsterTable.GetStat(item.typeId), item.position);
                     LocalPacketReceiver.OnRespawnMonster(monster.Id, monster.TypeId, monster.position);
                 }
             }
 
-            {
-                var typeId = 1;
-                var monster = new Monster(idCounter++, typeId);
-                monsters.Add(monster.Id, monster);
-                monster.Spawn(MonsterTable.GetStat(typeId), new Vector2(14, 0));
-                LocalPacketReceiver.OnRespawnMonster(monster.Id, monster.TypeId, monster.position);
-            }
+            //{
+            //    var typeId = 1;
+            //    var monster = new Monster(idCounter++, typeId);
+            //    monsters.Add(monster.Id, monster);
+            //    monster.Spawn(MonsterTable.GetStat(typeId), new Vector2(14, 0));
+            //    LocalPacketReceiver.OnRespawnMonster(monster.Id, monster.TypeId, monster.position);
+            //}
 
             LocalPacketReceiver.OnUpdatePlayerInfo(playerInfo, userStat, nowStat, equipments);
         }

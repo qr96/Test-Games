@@ -5,6 +5,14 @@ using UnityEngine;
 
 namespace LocalServerC
 {
+    public enum SpawnType
+    {
+        None = 0,
+        Player = 1,
+        Monster = 2,
+        Npc = 3
+    }
+
     public interface IDamageable
     {
         public void OnDamage(long damage);
@@ -99,7 +107,26 @@ namespace LocalServerC
         public int level;
     }
 
-    public static class EquipmentTable
+    public class MapInfo
+    {
+        public List<SpawnedInfo> infoList = new List<SpawnedInfo>();
+    }
+
+    public class SpawnedInfo
+    {
+        public SpawnType spawnType;
+        public int typeId;
+        public Vector2 position;
+        
+        public SpawnedInfo(SpawnType spawnType, int typeId, Vector2 position)
+        {
+            this.spawnType = spawnType;
+            this.typeId = typeId;
+            this.position = position;
+        }
+    }
+
+    public class EquipmentTable
     {
         public static Stat GetStat(Equipment equipment)
         {
@@ -158,6 +185,24 @@ namespace LocalServerC
                 return new Stat() { attack = 10, hp = 500 };
 
             return new Stat();
+        }
+    }
+
+    public class MapInfoTable
+    {
+        public static MapInfo GetMapInfo(int mapId)
+        {
+            var mapInfo = new MapInfo();
+
+            // This infos will be converted to read from json
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                    mapInfo.infoList.Add(new SpawnedInfo(SpawnType.Monster, 0, new Vector2(8 + i, -0.5f * j)));
+                mapInfo.infoList.Add(new SpawnedInfo(SpawnType.Monster, 1, new Vector2(14f, 0f)));
+            }
+
+            return mapInfo;
         }
     }
 }
