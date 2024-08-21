@@ -26,4 +26,18 @@ public static class KUtil
             return "0";
         return money.ToString("#,##0");
     }
+
+    public static string NumberSuffix(double number)
+    {
+        if (number > 999999999999999)
+            return $"{number / 1000000000000:F1}T";
+        else if (number > 999999999999)
+            return $"{number / 1000000000:F1}B";
+        else if (number > 999999999)
+            return $"{number / 1000000:F1}M";
+        else if (number > 999999)
+            return $"{number / 1000:F1}K";
+
+        return number.ToString("F0");
+    }
 }

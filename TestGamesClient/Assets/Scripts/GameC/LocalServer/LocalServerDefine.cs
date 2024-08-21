@@ -42,7 +42,8 @@ namespace LocalServerC
     {
         public string name;
         public int level;
-        public long exp;
+        //public long exp;
+        public double exp;
         public long money;
 
         public PlayerInfo()
@@ -160,16 +161,16 @@ namespace LocalServerC
 
     public class PlayerTable
     {
-        public static long GetNeedExp(int nowLevel)
+        public static double GetNeedExp(int nowLevel)
         {
-            var needExp = 0L;
+            var needExp = 0D;
 
             if (nowLevel < 10)
                 needExp = (nowLevel + 1) * 10;
-            else if (nowLevel % 5 == 0)
-                needExp = GetNeedExp(nowLevel - 1) * 2;
+            else if (nowLevel % 10 == 0)
+                needExp = GetNeedExp(nowLevel - 1) * 1.5D;
             else
-                needExp = (long)(GetNeedExp(nowLevel - 1) * 1.1D);
+                needExp = GetNeedExp(nowLevel - 1) * 1.05D;
 
             return needExp;
         }

@@ -28,7 +28,7 @@ namespace LocalServerC
 
             userStat = new Stat() { attack = 10, hp = 100 };
             nowStat = userStat.DeepCopy();
-            playerInfo = new PlayerInfo();
+            playerInfo = new PlayerInfo() { money = 100000000, level = 50 };
             equipments.Add(0, new Equipment() { type = 1, level = 0 });
         }
 
@@ -46,15 +46,13 @@ namespace LocalServerC
                 }
             }
 
-            //{
-            //    var typeId = 1;
-            //    var monster = new Monster(idCounter++, typeId);
-            //    monsters.Add(monster.Id, monster);
-            //    monster.Spawn(MonsterTable.GetStat(typeId), new Vector2(14, 0));
-            //    LocalPacketReceiver.OnRespawnMonster(monster.Id, monster.TypeId, monster.position);
-            //}
-
             LocalPacketReceiver.OnUpdatePlayerInfo(playerInfo, userStat, nowStat, equipments);
+
+            for (int i = 10; i < 500; i+=10)
+            {
+                var needExp = PlayerTable.GetNeedExp(i);
+                Debug.Log($"lv.{i}, exp : {needExp}, {KUtil.NumberSuffix(needExp)}");
+            }
         }
 
         private void Update()

@@ -19,10 +19,11 @@ public class UILayoutStatus : UILayout
         });
     }
 
-    public void SetExpGuage(long max, long now)
+    public void SetExpGuage(double max, double now)
     {
-        var percent = (float)now / max;
-        expGuage.SetGuage(percent, $"{percent * 100:F1}%");
+        var percent = now / max;
+        //expGuage.SetGuage(percent, $"{percent * 100:F1}%");
+        expGuage.SetGuage((float)percent, $"{KUtil.NumberSuffix(now)}/{KUtil.NumberSuffix(max)}");
     }
 
     public void SetLevel(int level)
