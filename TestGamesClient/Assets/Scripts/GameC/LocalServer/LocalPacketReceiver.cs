@@ -55,7 +55,13 @@ public class LocalPacketReceiver
     public static void OnResultEnhance(int result, int id, Equipment equipment)
     {
         ManagersC.ui.GetPopup<UIPopupEnhancement>().SetPopup(equipment);
-        if (result == 1)
-            ManagersC.ui.ShowPopup<UIPopupMessage>().SetPopup("안내", "보유 머니가 부족합니다.");
+        if (result == 0)
+            ManagersC.ui.GetLayout<UIToastMessageLayout>().ShowMessage("강화 실패");
+        else if (result == 1)
+            ManagersC.ui.GetLayout<UIToastMessageLayout>().ShowMessage("보유 머니가 부족합니다.");
+        else if (result == 2)
+            ManagersC.ui.GetLayout<UIToastMessageLayout>().ShowMessage("강화 성공");
+        else if (result == 3)
+            ManagersC.ui.GetLayout<UIToastMessageLayout>().ShowMessage("장비가 파괴되었습니다.");
     }
 }
