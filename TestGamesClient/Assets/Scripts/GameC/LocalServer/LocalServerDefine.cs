@@ -170,7 +170,7 @@ namespace LocalServerC
             else if (nowLevel % 10 == 0)
                 needExp = GetNeedExp(nowLevel - 1) * 1.5D;
             else
-                needExp = GetNeedExp(nowLevel - 1) * 1.05D;
+                needExp = GetNeedExp(nowLevel - 1) * 1.1D;
 
             return needExp;
         }
