@@ -28,7 +28,7 @@ public class UIToastMessageLayout : UILayout
             sequence = DOTween.Sequence();
             sequence.SetAutoKill(false);
             sequence.Append(messageCanvas.transform.DOScale(Vector3.one, 0.2f));
-            sequence.Append(messageCanvas.DOFade(0f, 0.3f));
+            sequence.Append(messageCanvas.DOFade(0f, 0.2f).SetDelay(0.1f));
             sequence.OnComplete(() => messageCanvas.gameObject.SetActive(false));
         }
         else
