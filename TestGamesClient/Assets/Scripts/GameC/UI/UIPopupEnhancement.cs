@@ -24,7 +24,7 @@ public class UIPopupEnhancement : UIPopup
         var enhanceInfo = "";
         enhanceInfo += $"강화 단계 : {equipment.level} > {equipment.level + 1}\n";
         enhanceInfo += $"성공 확률 : {EquipmentTable.GetSuccessPercenet(equipment.level) * 100}%\n";
-        enhanceInfo += $"파괴 확률 : {EquipmentTable.GetSuccessPercenet(equipment.level) * 100}%\n";
+        enhanceInfo += $"파괴 확률 : {EquipmentTable.GetDestroyPercent(equipment.level) * 100}%\n";
         enhanceInfo += "\n";
 
         enhanceInfo += EquipmentTable.GetStat(equipment).attack > 0 ? $"공격력 : +{EquipmentTable.GetStat(equipment).attack}" : "";
