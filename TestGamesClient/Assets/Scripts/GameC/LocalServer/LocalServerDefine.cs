@@ -200,8 +200,8 @@ namespace LocalServerC
             {
                 for (int j = 0; j < 4; j++)
                     mapInfo.infoList.Add(new SpawnedInfo(SpawnType.Monster, 0, new Vector2(8 + i, -0.5f * j)));
-                mapInfo.infoList.Add(new SpawnedInfo(SpawnType.Monster, 1, new Vector2(14f, 0f)));
             }
+            mapInfo.infoList.Add(new SpawnedInfo(SpawnType.Monster, 1, new Vector2(14f, 0f)));
 
             return mapInfo;
         }
