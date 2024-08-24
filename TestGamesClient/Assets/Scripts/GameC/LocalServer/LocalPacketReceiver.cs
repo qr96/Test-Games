@@ -41,7 +41,7 @@ public class LocalPacketReceiver
 
     }
 
-    public static void OnUpdatePlayerInfo(PlayerInfo info, Stat userStat, Stat nowStat, Dictionary<int, Equipment> equipments)
+    public static void OnUpdatePlayerInfo(PlayerInfo info, Stat userStat, Stat nowStat)
     {
         var uilayoutStatus = ManagersC.ui.GetLayout<UILayoutStatus>();
         uilayoutStatus.SetLevel(info.level);
@@ -49,7 +49,7 @@ public class LocalPacketReceiver
         uilayoutStatus.SetExpGuage(PlayerTable.GetNeedExp(info.level), info.exp);
         uilayoutStatus.SetHpGuage(userStat.hp, nowStat.hp);
 
-        ManagersC.ui.GetPopup<UIPopupEnhancement>().SetPopup(equipments[0]);
+        ManagersC.ui.GetPopup<UIPopupEnhancement>().SetPopup(info.equipped[0]);
     }
 
     public static void OnResultEnhance(int result, int id, Equipment equipment)

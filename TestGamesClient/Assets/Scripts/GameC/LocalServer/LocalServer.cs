@@ -10,13 +10,11 @@ namespace LocalServerC
         public static LocalServer Instance;
 
         Dictionary<int, Monster> monsters = new Dictionary<int, Monster>();
-
         Stack<int> monsterDeadList = new Stack<int>();
 
         Stat userStat;
         Stat nowStat;
         PlayerInfo playerInfo;
-        Dictionary<int, Equipment> equipments = new Dictionary<int, Equipment>();
 
         DateTime respawnTime = DateTime.MaxValue;
 
@@ -29,7 +27,7 @@ namespace LocalServerC
             userStat = new Stat() { attack = 10, hp = 100 };
             nowStat = userStat.DeepCopy();
             playerInfo = new PlayerInfo() { money = 100000000, level = 50 };
-            equipments.Add(0, new Equipment() { type = 1, level = 0 });
+            playerInfo.equipped.Add(0, new Equipment(1));
         }
 
         private void Start()
@@ -46,7 +44,7 @@ namespace LocalServerC
                 }
             }
 
-            LocalPacketReceiver.OnUpdatePlayerInfo(playerInfo, userStat, nowStat, equipments);
+            LocalPacketReceiver.OnUpdatePlayerInfo(playerInfo, userStat, nowStat);
 
             for (int i = 10; i < 500; i+=10)
             {
@@ -73,7 +71,7 @@ namespace LocalServerC
         public void AttackMonster(int id)
         {
             var coefficient = UnityEngine.Random.Range(0.3f, 1f);
-            var attack = userStat.attack + EquipmentTable.GetStat(equipments[0]).attack;
+            var attack = userStat.attack + EquipmentTable.GetStat(playerInfo.equipped[0]).attack;
             var damage = (long)(attack * coefficient);
 
             monsters[id].OnDamage(damage);
@@ -98,14 +96,15 @@ namespace LocalServerC
             if (nowStat.hp < 0) nowStat.hp = 0;
 
             LocalPacketReceiver.OnPlayerDamaged(damage);
-            LocalPacketReceiver.OnUpdatePlayerInfo(playerInfo, userStat, nowStat, equipments);
+            LocalPacketReceiver.OnUpdatePlayerInfo(playerInfo, userStat, nowStat);
         }
 
         public void EnhanceEquipment(int id)
         {
-            var success = EquipmentTable.GetSuccessPercenet(equipments[id].level);
-            var destroyed = EquipmentTable.GetDestroyPercent(equipments[id].level);
-            var price = EquipmentTable.GetEnhancePrice(equipments[id]);
+            var equipment = playerInfo.equipped[0];
+            var success = EquipmentTable.GetSuccessPercenet(equipment.level);
+            var destroyed = EquipmentTable.GetDestroyPercent(equipment.level);
+            var price = EquipmentTable.GetEnhancePrice(equipment);
             var rand = UnityEngine.Random.Range(0f, 1f);
             var result = 0;
 
@@ -117,11 +116,18 @@ namespace LocalServerC
                 result = 3;
 
             if (result == 2)
-                equipments[id].level++;
+                equipment.level++;
             else if (result == 3)
-                equipments[id].level = 0;
+                equipment.level = 0;
 
-            LocalPacketReceiver.OnResultEnhance(result, id, equipments[id]);
+            LocalPacketReceiver.OnResultEnhance(result, id, equipment);
+        }
+
+        public void AcquireItem(int id)
+        {
+            var valid = true;
+            if (valid)
+                playerInfo.AddEquipment(new Equipment(1));
         }
 
         void AddExp(long exp)
@@ -134,7 +140,7 @@ namespace LocalServerC
                 playerInfo.level++;
                 needExp = PlayerTable.GetNeedExp(playerInfo.level);
             }
-            LocalPacketReceiver.OnUpdatePlayerInfo(playerInfo, userStat, nowStat, equipments);
+            LocalPacketReceiver.OnUpdatePlayerInfo(playerInfo, userStat, nowStat);
         }
     }
 }

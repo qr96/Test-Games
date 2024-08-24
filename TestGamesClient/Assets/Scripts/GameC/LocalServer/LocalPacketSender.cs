@@ -11,6 +11,11 @@ public class LocalPacketSender
         server.AttackMonster(id);
     }
 
+    public static void SendAcquireItem(int id)
+    {
+        server.AcquireItem(id);
+    }
+
     public static void SendEnhanceEquipment(int equipId)
     {
         server.EnhanceEquipment(equipId);

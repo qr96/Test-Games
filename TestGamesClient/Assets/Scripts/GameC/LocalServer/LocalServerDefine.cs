@@ -46,12 +46,22 @@ namespace LocalServerC
         public double exp;
         public long money;
 
+        public Dictionary<int, Equipment> equipped = new Dictionary<int, Equipment>();
+        public List<Equipment> equipmentInventory = new List<Equipment>();
+
         public PlayerInfo()
         {
             name = "None";
             level = 1;
             exp = 0;
             money = 0;
+        }
+
+        public void AddEquipment(Equipment equip)
+        {
+            equipmentInventory.Add(equip);
+            for (int i = 0; i < equipmentInventory.Count; i++)
+                equipmentInventory[i].Id = i;
         }
     }
 
@@ -104,8 +114,15 @@ namespace LocalServerC
 
     public class Equipment
     {
-        public int type;
+        public int Id;
+        public int TypeId;
         public int level;
+
+        public Equipment(int typeId)
+        {
+            TypeId = typeId;
+            level = 0;
+        }
     }
 
     public class MapInfo
