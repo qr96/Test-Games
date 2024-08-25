@@ -8,7 +8,8 @@ public class LocalPacketSender
 
     public static void SendAttack(int id)
     {
-        server.AttackMonster(id);
+        var position = ManagersC.obj.GetObject(id).transform.position;
+        server.AttackMonster(id, position);
     }
 
     public static void SendAcquireItem(int id)

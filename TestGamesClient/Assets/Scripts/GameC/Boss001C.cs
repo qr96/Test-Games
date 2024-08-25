@@ -262,6 +262,6 @@ public class Boss001C : BaseEnemyC
     {
         animator.Rebind();
         gameObject.SetActive(false);
-        ManagersC.obj.RemoveMonster(GetId());
+        ManagersC.obj.RemovePrefab(GetId());
     }
 }

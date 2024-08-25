@@ -68,12 +68,13 @@ namespace LocalServerC
             //}
         }
 
-        public void AttackMonster(int id)
+        public void AttackMonster(int id, Vector2 position)
         {
             var coefficient = UnityEngine.Random.Range(0.3f, 1f);
             var attack = userStat.attack + EquipmentTable.GetStat(playerInfo.equipped[0]).attack;
             var damage = (long)(attack * coefficient);
 
+            monsters[id].position = position;
             monsters[id].OnDamage(damage);
         }
 
@@ -87,6 +88,7 @@ namespace LocalServerC
             AddExp(10);
 
             LocalPacketReceiver.OnMonsterDead(id);
+            LocalPacketReceiver.OnSpawnItem(idCounter++, 0, monsters[id].position);
         }
 
         public void OnPlayerDamaged(int id)

@@ -7,7 +7,7 @@ public class LocalPacketReceiver
 {
     public static void OnRespawnMonster(int id, int typeId, Vector2 position)
     {
-        var monsterSpawn = ManagersC.obj.SpawnMonster(id, typeId);
+        var monsterSpawn = ManagersC.obj.SpawnPrefab(id, typeId);
         monsterSpawn.transform.position = position;
         monsterSpawn.gameObject.SetActive(true);
 
@@ -63,5 +63,12 @@ public class LocalPacketReceiver
             ManagersC.ui.GetLayout<UIToastMessageLayout>().ShowMessage("강화 성공");
         else if (result == 3)
             ManagersC.ui.GetLayout<UIToastMessageLayout>().ShowMessage("장비가 파괴되었습니다.");
+    }
+
+    public static void OnSpawnItem(int id, int itemCode, Vector2 position)
+    {
+        var prefab = ManagersC.obj.SpawnPrefab(id, 2);
+        prefab.transform.position = position;
+        prefab.gameObject.SetActive(true);
     }
 }

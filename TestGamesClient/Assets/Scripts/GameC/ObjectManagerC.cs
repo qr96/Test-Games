@@ -9,7 +9,7 @@ public class ObjectManagerC : MonoBehaviour
     Dictionary<int, SpawnedC> idDic = new Dictionary<int, SpawnedC>();
     Dictionary<int, Stack<SpawnedC>> pool = new Dictionary<int, Stack<SpawnedC>>();
 
-    public SpawnedC SpawnMonster(int id, int typeId)
+    public SpawnedC SpawnPrefab(int id, int typeId)
     {
         if (!pool.ContainsKey(typeId))
             pool.Add(typeId, new Stack<SpawnedC>());
@@ -41,7 +41,7 @@ public class ObjectManagerC : MonoBehaviour
         }
     }
 
-    public void RemoveMonster(int id)
+    public void RemovePrefab(int id)
     {
         if (idDic.ContainsKey(id))
         {

@@ -250,6 +250,6 @@ public class EnemyC : BaseEnemyC
     {
         animator.Rebind();
         gameObject.SetActive(false);
-        ManagersC.obj.RemoveMonster(GetId());
+        ManagersC.obj.RemovePrefab(GetId());
     }
 }
