@@ -7,8 +7,8 @@ using UnityEngine.UI;
 
 public class SlotView : MonoBehaviour
 {
-    GameObject slotPrefab;
-    Transform slotParent;
+    public GameObject slotPrefab;
+    public Transform slotParent;
 
     List<GameObject> slotPool = new List<GameObject>();
 
