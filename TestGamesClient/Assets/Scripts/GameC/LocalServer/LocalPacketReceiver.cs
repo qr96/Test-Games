@@ -50,6 +50,7 @@ public class LocalPacketReceiver
         uilayoutStatus.SetHpGuage(userStat.hp, nowStat.hp);
 
         ManagersC.ui.GetPopup<UIPopupEnhancement>().SetPopup(info.equipped[0]);
+        ManagersC.ui.GetPopup<UIPopupInventory>().SetPopup(info.equipmentInventory);
     }
 
     public static void OnResultEnhance(int result, int id, Equipment equipment)
