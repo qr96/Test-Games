@@ -12,15 +12,6 @@ public class SlotView : MonoBehaviour
 
     List<GameObject> slotPool = new List<GameObject>();
 
-    public void SetPrefab(GameObject slotPrefab, Transform slotParent)
-    {
-        this.slotPrefab = slotPrefab;
-        this.slotParent = slotParent;
-
-        foreach (var slot in slotPool)
-            Destroy(slot);
-    }
-
     public void SetInventory<T>(List<T> items, Action<T, GameObject> setSlotFunc0)
     {
         var needSlot = items.Count - slotPool.Count;
