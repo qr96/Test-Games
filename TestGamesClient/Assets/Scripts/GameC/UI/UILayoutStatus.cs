@@ -15,14 +15,13 @@ public class UILayoutStatus : UILayout
     {
         equipmentBtn.onClick.AddListener(() =>
         {
-            ManagersC.ui.ShowPopup<UIPopupEnhancement>();
+            ManagersC.ui.ShowPopup<UIPopupInventory>();
         });
     }
 
     public void SetExpGuage(double max, double now)
     {
         var percent = now / max;
-        //expGuage.SetGuage(percent, $"{percent * 100:F1}%");
         expGuage.SetGuage((float)percent, $"{KUtil.NumberSuffix(now)}/{KUtil.NumberSuffix(max)}");
     }
 

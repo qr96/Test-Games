@@ -20,6 +20,9 @@ public class UIPopupInventory : UIPopup
             (item, prefab) =>
             {
                 prefab.SetActive(true);
+                
+                var button = prefab.GetComponent<KButton>();
+                button.onClick.AddListener(() => ManagersC.ui.ShowPopup<UIPopupEnhancement>());
             });
     }
 }
