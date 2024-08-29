@@ -129,7 +129,7 @@ namespace LocalServerC
         {
             var valid = true;
             if (valid)
-                playerInfo.AddEquipment(new Equipment(1));
+                playerInfo.ObtainItem(new Equipment(1));
             LocalPacketReceiver.OnUpdatePlayerInfo(playerInfo, userStat, nowStat);
         }
 

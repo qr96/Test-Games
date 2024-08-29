@@ -13,6 +13,17 @@ namespace LocalServerC
         Npc = 3
     }
 
+    public enum EquipType
+    {
+        None = 0,
+        Hat = 1,
+        Cloth = 2,
+        Glove = 3,
+        Shoe = 4,
+        Ring = 5,
+        Sword = 6,
+    }
+
     public interface IDamageable
     {
         public void OnDamage(long damage);
@@ -42,11 +53,10 @@ namespace LocalServerC
     {
         public string name;
         public int level;
-        //public long exp;
         public double exp;
         public long money;
 
-        public Dictionary<int, Equipment> equipped = new Dictionary<int, Equipment>();
+        public Dictionary<EquipType, Equipment> equipped = new Dictionary<EquipType, Equipment>();
         public List<Equipment> equipmentInventory = new List<Equipment>();
 
         public PlayerInfo()
@@ -57,11 +67,23 @@ namespace LocalServerC
             money = 0;
         }
 
-        public void AddEquipment(Equipment equip)
+        public void ObtainItem(Equipment equip)
         {
             equipmentInventory.Add(equip);
             for (int i = 0; i < equipmentInventory.Count; i++)
                 equipmentInventory[i].Id = i;
+        }
+
+        public void EquipItem(Equipment equip)
+        {
+            var equipType = EquipmentTable.GetEquipType(equip.TypeId);
+            equipped[equipType] = equip;
+        }
+
+        public void UnEquipItem(EquipType equipType)
+        {
+            if (equipped.ContainsKey(equipType))
+                equipped.Remove(equipType);
         }
     }
 
@@ -146,6 +168,21 @@ namespace LocalServerC
 
     public class EquipmentTable
     {
+        public static EquipType GetEquipType(int itemId)
+        {
+            return itemId switch
+            {
+                < 10000 => EquipType.None,
+                < 20000 => EquipType.Hat,
+                < 30000 => EquipType.Cloth,
+                < 40000 => EquipType.Glove,
+                < 50000 => EquipType.Shoe,
+                < 60000 => EquipType.Ring,
+                < 70000 => EquipType.Sword,
+                _ => EquipType.None
+            };
+        }
+
         public static Stat GetStat(Equipment equipment)
         {
             var stat = new Stat();
