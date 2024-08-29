@@ -50,6 +50,11 @@ public class MyPlayerB : MonoBehaviour, IDamageableC
         Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - 10f);
     }
 
+    public void OnDamage()
+    {
+        //throw new NotImplementedException();
+    }
+
     void OnAttack()
     {
         if (DateTime.Now < attackEnd)
@@ -104,10 +109,5 @@ public class MyPlayerB : MonoBehaviour, IDamageableC
         pushVector = enemyVector - myVector;
         pushVector = pushVector.normalized;
         return pushVector;
-    }
-
-    public void OnDamage()
-    {
-        //throw new NotImplementedException();
     }
 }
