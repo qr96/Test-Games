@@ -14,7 +14,7 @@ public class LocalPacketSender
 
     public static void SendAcquireItem(int id)
     {
-        server.AcquireItem(id);
+        server.AcquireDroppedItem(id);
     }
 
     public static void SendEnhanceEquipment(int equipId)

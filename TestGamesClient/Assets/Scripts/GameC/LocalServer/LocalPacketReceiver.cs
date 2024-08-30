@@ -66,10 +66,11 @@ public class LocalPacketReceiver
             ManagersC.ui.GetLayout<UIToastMessageLayout>().ShowMessage("장비가 파괴되었습니다.");
     }
 
-    public static void OnSpawnItem(int id, int itemCode, Vector2 position)
+    public static void OnSpawnItem(int itemId, int itemCode, Vector2 position)
     {
-        var prefab = ManagersC.obj.SpawnPrefab(id, 2);
+        var prefab = ManagersC.obj.SpawnPrefab(itemId, 2);
         prefab.transform.position = position;
         prefab.gameObject.SetActive(true);
+        prefab.GetComponent<DroppedItem>().OnSpawnItem(itemId, itemCode);
     }
 }

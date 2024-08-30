@@ -11,6 +11,7 @@ namespace LocalServerC
 
         Dictionary<int, Monster> monsters = new Dictionary<int, Monster>();
         Stack<int> monsterDeadList = new Stack<int>();
+        Dictionary<int, int> droppedItem = new Dictionary<int, int>(); // <itemId, itemCode>
 
         Stat userStat;
         Stat nowStat;
@@ -71,7 +72,7 @@ namespace LocalServerC
         public void AttackMonster(int id, Vector2 position)
         {
             var coefficient = UnityEngine.Random.Range(0.3f, 1f);
-            var attack = userStat.attack + EquipmentTable.GetStat(playerInfo.equipped[0]).attack;
+            var attack = userStat.attack + EquipmentTable.GetStat(playerInfo.equipped[EquipType.Sword]).attack;
             var damage = (long)(attack * coefficient);
 
             monsters[id].position = position;
@@ -88,7 +89,7 @@ namespace LocalServerC
             AddExp(10);
 
             LocalPacketReceiver.OnMonsterDead(id);
-            LocalPacketReceiver.OnSpawnItem(idCounter++, 0, monsters[id].position);
+            DropItem(monsters[id].position);
         }
 
         public void OnPlayerDamaged(int id)
@@ -125,12 +126,18 @@ namespace LocalServerC
             LocalPacketReceiver.OnResultEnhance(result, id, equipment);
         }
 
-        public void AcquireItem(int id)
+        public void AcquireDroppedItem(int id)
         {
-            var valid = true;
-            if (valid)
-                playerInfo.ObtainItem(new Equipment(1));
-            LocalPacketReceiver.OnUpdatePlayerInfo(playerInfo, userStat, nowStat);
+            if (droppedItem.ContainsKey(id))
+            {
+                playerInfo.ObtainItem(new Equipment(droppedItem[id]));
+                droppedItem.Remove(id);
+                LocalPacketReceiver.OnUpdatePlayerInfo(playerInfo, userStat, nowStat);
+            }
+            else
+            {
+                Debug.LogError($"Invalid dropped item id. {id}");
+            }
         }
 
         public void EquipItem(int index)
@@ -149,6 +156,14 @@ namespace LocalServerC
                 needExp = PlayerTable.GetNeedExp(playerInfo.level);
             }
             LocalPacketReceiver.OnUpdatePlayerInfo(playerInfo, userStat, nowStat);
+        }
+
+        void DropItem(Vector2 position)
+        {
+            var droppedItemId = idCounter++;
+            var droppedItemCode = UnityEngine.Random.Range(1, 7) * 10000 + 1;
+            droppedItem.Add(droppedItemId, droppedItemCode);
+            LocalPacketReceiver.OnSpawnItem(droppedItemId, droppedItemCode, position);
         }
     }
 }

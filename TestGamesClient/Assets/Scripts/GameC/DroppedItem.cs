@@ -2,20 +2,23 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DroppedItem : MonoBehaviour
 {
     public TriggerEvent2D trigger;
-    int id;
+    public SpriteRenderer image;
+
+    int itemId;
 
     private void Awake()
     {
         trigger.SetTriggerEvent(onEnter: OnEnterPlayer);
     }
 
-    public void OnSpawnItem(int id)
+    public void OnSpawnItem(int itemId, int itemCode)
     {
-        this.id = id;
+        this.itemId = itemId;
         trigger.enabled = false;
     }
 
@@ -23,7 +26,7 @@ public class DroppedItem : MonoBehaviour
     {
         if (col.CompareTag("Player"))
         {
-            LocalPacketSender.SendAcquireItem(id);
+            LocalPacketSender.SendAcquireItem(itemId);
             gameObject.SetActive(false);
         }
     }
