@@ -27,7 +27,13 @@ namespace LocalServerC
             userStat = new Stat() { attack = 10, hp = 100 };
             nowStat = userStat.DeepCopy();
             playerInfo = new PlayerInfo() { money = 100000000, level = 50 };
-            playerInfo.equipped.Add(0, new Equipment(1));
+
+            playerInfo.equipped.Add(EquipType.Hat, new Equipment(0));
+            playerInfo.equipped.Add(EquipType.Cloth, new Equipment(0));
+            playerInfo.equipped.Add(EquipType.Glove, new Equipment(0));
+            playerInfo.equipped.Add(EquipType.Shoe, new Equipment(0));
+            playerInfo.equipped.Add(EquipType.Ring, new Equipment(0));
+            playerInfo.equipped.Add(EquipType.Sword, new Equipment(60001));
         }
 
         private void Start()
@@ -45,12 +51,6 @@ namespace LocalServerC
             }
 
             LocalPacketReceiver.OnUpdatePlayerInfo(playerInfo, userStat, nowStat);
-
-            for (int i = 10; i < 500; i+=10)
-            {
-                var needExp = PlayerTable.GetNeedExp(i);
-                Debug.Log($"lv.{i}, exp : {needExp}, {KUtil.NumberSuffix(needExp)}");
-            }
         }
 
         private void Update()
@@ -131,6 +131,11 @@ namespace LocalServerC
             if (valid)
                 playerInfo.ObtainItem(new Equipment(1));
             LocalPacketReceiver.OnUpdatePlayerInfo(playerInfo, userStat, nowStat);
+        }
+
+        public void EquipItem(int index)
+        {
+            playerInfo.EquipItem(playerInfo.equipmentInventory[index]);
         }
 
         void AddExp(long exp)

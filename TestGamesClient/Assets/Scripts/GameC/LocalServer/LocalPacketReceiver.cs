@@ -49,8 +49,8 @@ public class LocalPacketReceiver
         uilayoutStatus.SetExpGuage(PlayerTable.GetNeedExp(info.level), info.exp);
         uilayoutStatus.SetHpGuage(userStat.hp, nowStat.hp);
 
-        ManagersC.ui.GetPopup<UIPopupEnhancement>().SetPopup(info.equipped[0]);
-        ManagersC.ui.GetPopup<UIPopupInventory>().SetPopup(info.equipmentInventory);
+        //ManagersC.ui.GetPopup<UIPopupEnhancement>().SetPopup(info.equipped[0]);
+        ManagersC.ui.GetPopup<UIPopupInventory>().SetPopup(info.equipmentInventory, info.equipped);
     }
 
     public static void OnResultEnhance(int result, int id, Equipment equipment)

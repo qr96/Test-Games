@@ -26,4 +26,9 @@ public class LocalPacketSender
     {
         server.OnPlayerDamaged(id);
     }
+
+    public static void SendEquipItem(int index)
+    {
+        server.EquipItem(index);
+    }
 }
