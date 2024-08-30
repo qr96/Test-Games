@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class UIPopupInventory : UIPopup
 {
-    public List<Image> equippedSlots;
+    public List<ItemSlot> equippedSlots;
     public SlotView slotView;
     public Button dim;
 
@@ -25,6 +25,9 @@ public class UIPopupInventory : UIPopup
                 
                 var button = prefab.GetComponent<KButton>();
                 button.onClick.AddListener(() => ManagersC.ui.ShowPopup<UIPopupEnhancement>());
+
+                var spritePath = ResourceTable.GetEquipmemtImage(item.TypeId);
+                prefab.GetComponent<ItemSlot>().SetImage(spritePath);
             });
 
         foreach (var equip in equipped)
@@ -34,7 +37,6 @@ public class UIPopupInventory : UIPopup
     void SetEquippedImage(EquipType type, Equipment equipment)
     {
         var spritePath = ResourceTable.GetEquipmemtImage(equipment.TypeId);
-        var sprite = Resources.Load<Sprite>(spritePath);
 
         int slotNum = type switch
         {
@@ -49,9 +51,7 @@ public class UIPopupInventory : UIPopup
 
         if (slotNum > -1)
         {
-            if (sprite != null)
-                equippedSlots[slotNum].sprite = sprite;
-            equippedSlots[slotNum].enabled = sprite != null;
+            equippedSlots[slotNum].SetImage(spritePath);
         }
     }
 }
