@@ -24,7 +24,7 @@ public class UIPopupInventory : UIPopup
                 prefab.SetActive(true);
                 
                 var button = prefab.GetComponent<KButton>();
-                button.onClick.AddListener(() => ManagersC.ui.ShowPopup<UIPopupEnhancement>());
+                button.onClick.AddListener(() => ManagersC.ui.ShowPopup<UIPopupEquipmentInfo>().SetPopup(item));
 
                 var spritePath = ResourceTable.GetEquipmemtImage(item.TypeId);
                 prefab.GetComponent<ItemSlot>().SetImage(spritePath);

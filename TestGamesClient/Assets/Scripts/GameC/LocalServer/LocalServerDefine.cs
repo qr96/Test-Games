@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace LocalServerC
@@ -72,6 +73,20 @@ namespace LocalServerC
             equipmentInventory.Add(equip);
             for (int i = 0; i < equipmentInventory.Count; i++)
                 equipmentInventory[i].Id = i;
+        }
+
+        public void EquipItem(int equipId)
+        {
+            if (equipId < equipmentInventory.Count)
+            {
+                var equip = equipmentInventory[equipId];
+                var equipType = EquipmentTable.GetEquipType(equip.TypeId);
+                equipped[equipType] = equip;
+            }
+            else
+            {
+                Debug.LogError($"EquipItem() Invalid equipId : {equipId}");
+            }
         }
 
         public void EquipItem(Equipment equip)
