@@ -23,6 +23,7 @@ public class UIPopupEquipmentInfo : UIPopup
 
     public void SetPopup(Equipment equip)
     {
+        equipmentId = equip.Id;
         var spritePath = ResourceTable.GetEquipmemtImage(equip.TypeId);
         itemSlot.SetImage(spritePath);
     }
@@ -30,5 +31,6 @@ public class UIPopupEquipmentInfo : UIPopup
     void OnClickEquipButton()
     {
         LocalPacketSender.SendEquipItem(equipmentId);
+        Hide();
     }
 }
