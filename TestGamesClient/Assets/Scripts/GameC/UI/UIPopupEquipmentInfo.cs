@@ -12,25 +12,25 @@ public class UIPopupEquipmentInfo : UIPopup
     public KButton equipButton;
     public ItemSlot itemSlot;
 
-    int equipmentId;
+    Equipment equipment;
 
     public override void OnCreate()
     {
         dim.onClick.AddListener(() => Hide());
-        enhanceButton.onClick.AddListener(() => ManagersC.ui.ShowPopup<UIPopupEnhancement>());
+        enhanceButton.onClick.AddListener(() => ManagersC.ui.ShowPopup<UIPopupEnhancement>().SetPopup(equipment));
         equipButton.onClick.AddListener(() => OnClickEquipButton());
     }
 
     public void SetPopup(Equipment equip)
     {
-        equipmentId = equip.Id;
+        equipment = equip;
         var spritePath = ResourceTable.GetEquipmemtImage(equip.TypeId);
         itemSlot.SetImage(spritePath);
     }
 
     void OnClickEquipButton()
     {
-        LocalPacketSender.SendEquipItem(equipmentId);
+        LocalPacketSender.SendEquipItem(equipment.Id);
         Hide();
     }
 }

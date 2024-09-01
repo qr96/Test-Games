@@ -104,7 +104,7 @@ namespace LocalServerC
 
         public void EnhanceEquipment(int id)
         {
-            var equipment = playerInfo.equipped[0];
+            var equipment = playerInfo.equipmentInventory[id];
             var success = EquipmentTable.GetSuccessPercenet(equipment.level);
             var destroyed = EquipmentTable.GetDestroyPercent(equipment.level);
             var price = EquipmentTable.GetEnhancePrice(equipment);
@@ -143,6 +143,7 @@ namespace LocalServerC
         public void EquipItem(int index)
         {
             playerInfo.EquipItem(playerInfo.equipmentInventory[index]);
+            LocalPacketReceiver.OnUpdatePlayerInfo(playerInfo, userStat, nowStat);
         }
 
         void AddExp(long exp)

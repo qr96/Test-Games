@@ -13,6 +13,8 @@ public class UIPopupEnhancement : UIPopup
     public KButton enhanceBtn;
     public Button touchBlock;
 
+    int equipmentId;
+
     public override void OnCreate()
     {
         enhanceBtn.onClick.AddListener(Enhance);
@@ -32,10 +34,12 @@ public class UIPopupEnhancement : UIPopup
 
         info.text = enhanceInfo;
         money.text = $"소모 골드 : {KUtil.DecimalSeperator(EquipmentTable.GetEnhancePrice(equipment))}";
+
+        equipmentId = equipment.Id;
     }
 
     void Enhance()
     {
-        LocalPacketSender.SendEnhanceEquipment(0);
+        LocalPacketSender.SendEnhanceEquipment(equipmentId);
     }
 }
