@@ -66,6 +66,13 @@ namespace LocalServerC
             level = 1;
             exp = 0;
             money = 0;
+
+            equipped.Add(EquipType.Hat, new Equipment(0));
+            equipped.Add(EquipType.Cloth, new Equipment(0));
+            equipped.Add(EquipType.Glove, new Equipment(0));
+            equipped.Add(EquipType.Shoe, new Equipment(0));
+            equipped.Add(EquipType.Ring, new Equipment(0));
+            equipped.Add(EquipType.Sword, new Equipment(0));
         }
 
         public void ObtainItem(Equipment equip)

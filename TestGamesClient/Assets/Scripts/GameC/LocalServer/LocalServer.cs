@@ -29,12 +29,8 @@ namespace LocalServerC
             nowStat = userStat.DeepCopy();
             playerInfo = new PlayerInfo() { money = 100000000, level = 50 };
 
-            playerInfo.equipped.Add(EquipType.Hat, new Equipment(0));
-            playerInfo.equipped.Add(EquipType.Cloth, new Equipment(0));
-            playerInfo.equipped.Add(EquipType.Glove, new Equipment(0));
-            playerInfo.equipped.Add(EquipType.Shoe, new Equipment(0));
-            playerInfo.equipped.Add(EquipType.Ring, new Equipment(0));
-            playerInfo.equipped.Add(EquipType.Sword, new Equipment(60001));
+            playerInfo.ObtainItem(new Equipment(60001));
+            playerInfo.EquipItem(0);
         }
 
         private void Start()
@@ -142,7 +138,7 @@ namespace LocalServerC
 
         public void EquipItem(int index)
         {
-            playerInfo.EquipItem(playerInfo.equipmentInventory[index]);
+            playerInfo.EquipItem(index);
             LocalPacketReceiver.OnUpdatePlayerInfo(playerInfo, userStat, nowStat);
         }
 
