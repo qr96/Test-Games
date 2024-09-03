@@ -78,6 +78,7 @@ public class ObjectManagerC : MonoBehaviour
             localIdDic.Add(id, prefab);
         }
 
+        localIdDic[id].SetActive(true);
         return localIdDic[id];
     }
 

@@ -10,7 +10,6 @@ public class MyPlayerB : MonoBehaviour, IDamageableC
     public Rigidbody2D rigid;
     public Animator animator;
     public TriggerEvent2D attackTrigger;
-    public SpriteRenderer attackEffect;
 
     public float speed;
     public float attackDelay = 1f;
@@ -89,7 +88,7 @@ public class MyPlayerB : MonoBehaviour, IDamageableC
 
         yield return new WaitForSeconds(delay);
 
-        attackEffect.DOFade(1f, 0.01f).OnComplete(() => attackEffect.DOFade(0f, 0.29f));
+        ShowAttackEffect();
 
         foreach (var target in targets)
         {
@@ -101,6 +100,30 @@ public class MyPlayerB : MonoBehaviour, IDamageableC
             target.SetTarget(transform);
         }
         speed = 200f;
+    }
+
+    void ShowAttackEffect()
+    {
+        var attackPefab = ManagersC.obj.SpawnPrefabLocal(3);
+        var attackEffect = attackPefab.GetComponent<SpriteRenderer>();
+        attackEffect.DOFade(1f, 0.01f)
+            .OnComplete(() =>
+            attackEffect.DOFade(0f, 0.29f)
+            .OnComplete(() =>
+            ManagersC.obj.RemovePrefabLocal(attackPefab.Id)));
+
+        var attackEffectPivot = new Vector3(-0.89f, 0.61f, 0f);
+        if (input.x > 0)
+        {
+            attackEffectPivot.x *= -1;
+            attackPefab.transform.position = transform.position + attackEffectPivot;
+            attackPefab.transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
+        }
+        else if (input.x < 0)
+        {
+            attackPefab.transform.position = transform.position + attackEffectPivot;
+            attackPefab.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+        }
     }
 
     Vector2 CalculatePushVector(Vector2 myVector, Vector2 enemyVector)
