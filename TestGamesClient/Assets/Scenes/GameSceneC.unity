@@ -9148,11 +9148,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!212 &125708008 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 6865047558418511762, guid: bd5ff2e30c10d6a42abcc29a4b71e838, type: 3}
-  m_PrefabInstance: {fileID: 4383892439473027152}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &145010734
 GameObject:
   m_ObjectHideFlags: 0
@@ -21396,7 +21391,6 @@ MonoBehaviour:
   rigid: {fileID: 508294379}
   animator: {fileID: 1643053208}
   attackTrigger: {fileID: 1913062843}
-  attackEffect: {fileID: 125708008}
   speed: 200
   attackDelay: 0.5
   pushPower: 3
@@ -21519,6 +21513,53 @@ MonoBehaviour:
   - {fileID: 2098348821}
   canvas: {fileID: 155047863}
   root: {fileID: 185008258}
+--- !u!1 &650031389
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 650031390}
+  - component: {fileID: 650031391}
+  m_Layer: 0
+  m_Name: MapManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &650031390
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 650031389}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 955027877}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &650031391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 650031389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d58715c60e35b9f4cb979cb05a440b40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maps:
+  - {fileID: 1209380416}
+  - {fileID: 2027334885}
 --- !u!1 &654661023
 GameObject:
   m_ObjectHideFlags: 0
@@ -24070,6 +24111,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2010736915}
+  - {fileID: 650031390}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &955027878
@@ -24086,6 +24128,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _ui: {fileID: 595098803}
   _obj: {fileID: 2010736916}
+  _map: {fileID: 0}
 --- !u!1 &960693268
 GameObject:
   m_ObjectHideFlags: 0
