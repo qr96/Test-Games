@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MyPlayerB : MonoBehaviour, IDamageableC
+public class MyPlayerC : MonoBehaviour, IDamageableC
 {
     public Rigidbody2D rigid;
     public Animator animator;
