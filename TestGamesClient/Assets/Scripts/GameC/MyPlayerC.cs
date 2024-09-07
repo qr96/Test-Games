@@ -11,6 +11,8 @@ public class MyPlayerC : MonoBehaviour, IDamageableC
     public Animator animator;
     public TriggerEvent2D attackTrigger;
 
+    public List<AttackSkillC> attackSkills;
+
     public float speed;
     public float attackDelay = 1f;
     public float pushPower = 3f;
@@ -24,6 +26,7 @@ public class MyPlayerC : MonoBehaviour, IDamageableC
     private void Start()
     {
         attackTrigger.SetTriggerEvent(onEnter: OnAttackStart, onExit: OnAttackEnd);
+        attackSkills[0].SetSkill(gameObject, 0.5f, 0.3f, 3f);
     }
 
     private void Update()
