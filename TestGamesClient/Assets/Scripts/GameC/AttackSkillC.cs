@@ -7,6 +7,7 @@ public class AttackSkillC : MonoBehaviour
 {
     public TriggerEvent2D trigger;
 
+    int skillCode;
     GameObject caster;
     float damageDelay;
     float pushPower;
@@ -36,6 +37,8 @@ public class AttackSkillC : MonoBehaviour
             if (targets.Count > 0 && DateTime.Now > coolEnd)
             {
                 coolEnd = DateTime.Now.AddSeconds(coolTime);
+                var effectPrefab = ManagersC.obj.SpawnPrefabLocal(4);
+                effectPrefab.transform.position = caster.transform.position;
 
                 yield return new WaitForSeconds(damageDelay);
 
