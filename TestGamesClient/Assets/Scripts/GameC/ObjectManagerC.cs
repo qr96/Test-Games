@@ -23,18 +23,15 @@ public class ObjectManagerC : MonoBehaviour
 
     public SpawnedC SpawnPrefab(int id, int typeId)
     {
+        SpawnedC spawned;
+
         if (pool[typeId].Count > 0)
-        {
-            var prefab = pool[typeId].Pop();
-            prefab.Set(id, typeId, (id) => RemovePrefab(id));
-            idDic.Add(id, prefab);
-        }
+            spawned = pool[typeId].Pop();
         else
-        {
-            var prefab = Instantiate(prefabs[typeId]);
-            prefab.Set(id, typeId, (id) => RemovePrefab(id));
-            idDic.Add(id, prefab);
-        }
+            spawned = Instantiate(prefabs[typeId]);
+
+        spawned.Set(id, typeId, (id) => RemovePrefab(id));
+        idDic.Add(id, spawned);
 
         return idDic[id];
     }
@@ -64,19 +61,15 @@ public class ObjectManagerC : MonoBehaviour
     public SpawnedC SpawnPrefabLocal(int typeId)
     {
         var id = localId++;
+        SpawnedC spawned;
 
         if (pool[typeId].Count > 0)
-        {
-            var prefab = pool[typeId].Pop();
-            prefab.Set(id, typeId, (id) => RemovePrefabLocal(id));
-            localIdDic.Add(id, prefab);
-        }
+            spawned = pool[typeId].Pop();
         else
-        {
-            var prefab = Instantiate(prefabs[typeId]);
-            prefab.Set(id, typeId, (id) => RemovePrefabLocal(id));
-            localIdDic.Add(id, prefab);
-        }
+            spawned = Instantiate(prefabs[typeId]);
+
+        spawned.Set(id, typeId, (id) => RemovePrefabLocal(id));
+        localIdDic.Add(id, spawned);
 
         localIdDic[id].SetActive(true);
         return localIdDic[id];
