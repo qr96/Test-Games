@@ -27,4 +27,9 @@ public class SpawnedC : MonoBehaviour
     {
         gameObject.SetActive(active);
     }
+
+    public void ReturnPool()
+    {
+        ManagersC.obj.RemovePrefab(Id);
+    }
 }
