@@ -29,4 +29,13 @@ public class UILayoutFieldOverlay : UILayout
             .SetEase(Ease.InCirc)
             .OnComplete(() => damagePool.Push(damageIns));
     }
+
+    public void ShowDamage(List<long> damages, Vector3 worldPosition)
+    {
+        for (int i = 0; i < damages.Count; i++)
+        {
+            var newWolrdPos = worldPosition.ChangeY(worldPosition.y + i * 0.5f);
+            ShowDamage(damages[i], newWolrdPos);
+        }
+    }
 }

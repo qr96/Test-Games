@@ -17,7 +17,7 @@ public class LocalPacketReceiver
         monster.OnSpawn();
     }
 
-    public static void OnMonsterAttacked(int id, long damage)
+    public static void OnMonsterAttacked(int id, List<long> damages)
     {
         var monsterObj = ManagersC.obj.GetObject(id);
         var monster = monsterObj.GetComponent<BaseEnemyC>();
@@ -29,7 +29,7 @@ public class LocalPacketReceiver
         }
 
         monster.OnDamage();
-        ManagersC.ui.GetLayout<UILayoutFieldOverlay>().ShowDamage(damage, monster.transform.position);
+        ManagersC.ui.GetLayout<UILayoutFieldOverlay>().ShowDamage(damages, monster.transform.position);
     }
 
     public static void OnMonsterDead(int id)

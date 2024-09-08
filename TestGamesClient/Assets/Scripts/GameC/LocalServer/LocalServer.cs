@@ -67,12 +67,18 @@ namespace LocalServerC
 
         public void AttackMonster(int id, Vector2 position)
         {
-            var coefficient = UnityEngine.Random.Range(0.3f, 1f);
-            var attack = userStat.attack + EquipmentTable.GetStat(playerInfo.equipped[EquipType.Sword]).attack;
-            var damage = (long)(attack * coefficient);
+            List<long> damages = new List<long>();
+            
+            for (int i = 0; i < 3; i++)
+            {
+                var coefficient = UnityEngine.Random.Range(0.3f, 1f);
+                var attack = userStat.attack + EquipmentTable.GetStat(playerInfo.equipped[EquipType.Sword]).attack;
+                var damage = (long)(attack * coefficient);
+                damages.Add(damage);
+            }
 
             monsters[id].position = position;
-            monsters[id].OnDamage(damage);
+            monsters[id].OnDamage(damages);
         }
 
         public void UseSKill(int skillCode, Vector2 position)

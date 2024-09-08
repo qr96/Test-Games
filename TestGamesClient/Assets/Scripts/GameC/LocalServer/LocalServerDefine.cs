@@ -27,7 +27,7 @@ namespace LocalServerC
 
     public interface IDamageable
     {
-        public void OnDamage(long damage);
+        public void OnDamage(List<long> damages);
     }
 
     public class Stat
@@ -135,13 +135,14 @@ namespace LocalServerC
             nowStat.Set(stat);
         }
 
-        public void OnDamage(long damage)
+        public void OnDamage(List<long> damages)
         {
             if (nowStat.hp <= 0)
                 return;
 
-            nowStat.hp -= damage;
-            LocalPacketReceiver.OnMonsterAttacked(Id, damage);
+            foreach (var damage in damages)
+                nowStat.hp -= damage;
+            LocalPacketReceiver.OnMonsterAttacked(Id, damages);
 
             if (nowStat.hp <= 0)
                 OnDead();
