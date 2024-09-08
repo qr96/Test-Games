@@ -26,13 +26,13 @@ public class ObjectManagerC : MonoBehaviour
         if (pool[typeId].Count > 0)
         {
             var prefab = pool[typeId].Pop();
-            prefab.SetId(id, typeId);
+            prefab.Set(id, typeId, (id) => RemovePrefab(id));
             idDic.Add(id, prefab);
         }
         else
         {
             var prefab = Instantiate(prefabs[typeId]);
-            prefab.SetId(id, typeId);
+            prefab.Set(id, typeId, (id) => RemovePrefab(id));
             idDic.Add(id, prefab);
         }
 
@@ -68,13 +68,13 @@ public class ObjectManagerC : MonoBehaviour
         if (pool[typeId].Count > 0)
         {
             var prefab = pool[typeId].Pop();
-            prefab.SetId(id, typeId);
+            prefab.Set(id, typeId, (id) => RemovePrefabLocal(id));
             localIdDic.Add(id, prefab);
         }
         else
         {
             var prefab = Instantiate(prefabs[typeId]);
-            prefab.SetId(id, typeId);
+            prefab.Set(id, typeId, (id) => RemovePrefabLocal(id));
             localIdDic.Add(id, prefab);
         }
 

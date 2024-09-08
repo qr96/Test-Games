@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,10 +8,13 @@ public class SpawnedC : MonoBehaviour
     public int Id;
     public int TypeId;
 
-    public void SetId(int id, int typeId)
+    Action<int> removeFunc;
+
+    public void Set(int id, int typeId, Action<int> removeFunc)
     {
         Id = id;
         TypeId = typeId;
+        this.removeFunc = removeFunc;
     }
 
     public int GetId()
@@ -28,8 +32,8 @@ public class SpawnedC : MonoBehaviour
         gameObject.SetActive(active);
     }
 
-    public void ReturnPool()
+    public void Remove()
     {
-        ManagersC.obj.RemovePrefab(Id);
+        removeFunc?.Invoke(Id);
     }
 }
