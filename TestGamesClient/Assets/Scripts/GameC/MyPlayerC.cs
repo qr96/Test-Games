@@ -48,11 +48,6 @@ public class MyPlayerC : MonoBehaviour, IDamageableC
             transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
     }
 
-    private void LateUpdate()
-    {
-        Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - 10f);
-    }
-
     public void OnDamage()
     {
         //throw new NotImplementedException();
