@@ -112,15 +112,15 @@ namespace LocalServerC
     public class Monster : IDamageable
     {
         public int Id;
-        public int TypeId;
+        public int TypeCode;
 
         public Stat nowStat;
         public Vector2 position;
 
-        public Monster(int id, int typeId)
+        public Monster(int id, int typeCode)
         {
             Id = id;
-            TypeId = typeId;
+            TypeCode = typeCode;
             nowStat = new Stat();
         }
 
@@ -174,13 +174,13 @@ namespace LocalServerC
     public class SpawnedInfo
     {
         public SpawnType spawnType;
-        public int typeId;
+        public int typeCode;
         public Vector2 position;
         
-        public SpawnedInfo(SpawnType spawnType, int typeId, Vector2 position)
+        public SpawnedInfo(SpawnType spawnType, int typeCode, Vector2 position)
         {
             this.spawnType = spawnType;
-            this.typeId = typeId;
+            this.typeCode = typeCode;
             this.position = position;
         }
     }

@@ -40,10 +40,10 @@ namespace LocalServerC
             {
                 if (item.spawnType == SpawnType.Monster)
                 {
-                    var monster = new Monster(idCounter++, item.typeId);
+                    var monster = new Monster(idCounter++, item.typeCode);
                     monsters.Add(monster.Id, monster);
-                    monster.Spawn(MonsterTable.GetStat(item.typeId), item.position);
-                    LocalPacketReceiver.OnRespawnMonster(monster.Id, monster.TypeId, monster.position);
+                    monster.Spawn(MonsterTable.GetStat(item.typeCode), item.position);
+                    LocalPacketReceiver.OnRespawnMonster(monster.Id, monster.TypeCode, monster.position);
                 }
             }
 
