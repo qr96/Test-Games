@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class ObjectManagerC : MonoBehaviour
 {
-    // TODO : from resources folder and db.
-    public List<SpawnedC> prefabs = new List<SpawnedC>();
-
-    // server
-    Dictionary<int, SpawnedC> idDic = new Dictionary<int, SpawnedC>();
+    // Common
     Dictionary<string, Stack<SpawnedC>> pool = new Dictionary<string, Stack<SpawnedC>>();
     Dictionary<string, SpawnedC> prefabCache = new Dictionary<string, SpawnedC>();
 
-    // client
+    // Server
+    Dictionary<int, SpawnedC> idDic = new Dictionary<int, SpawnedC>();
+    
+    // Client
     int localId;
     Dictionary<int, SpawnedC> localIdDic = new Dictionary<int, SpawnedC>();
 
