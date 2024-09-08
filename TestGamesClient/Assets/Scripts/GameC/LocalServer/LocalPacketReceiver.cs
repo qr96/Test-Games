@@ -73,4 +73,11 @@ public class LocalPacketReceiver
         prefab.gameObject.SetActive(true);
         prefab.GetComponent<DroppedItem>().OnSpawnItem(itemId, itemCode);
     }
+
+    public static void UseSkill(int id, int skillCode, Vector2 position)
+    {
+        var prefab = ManagersC.obj.SpawnPrefab(id, skillCode);
+        prefab.transform.position = position;
+        prefab.SetActive(true);
+    }
 }

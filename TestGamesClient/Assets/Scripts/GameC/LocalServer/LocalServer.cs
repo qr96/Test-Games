@@ -75,6 +75,11 @@ namespace LocalServerC
             monsters[id].OnDamage(damage);
         }
 
+        public void UseSKill(int skillCode, Vector2 position)
+        {
+            LocalPacketReceiver.UseSkill(idCounter++, skillCode, position);
+        }
+
         public void OnDeadMonster(int id)
         {
             if (monsterDeadList.Count <= 0)

@@ -37,8 +37,7 @@ public class AttackSkillC : MonoBehaviour
             if (targets.Count > 0 && DateTime.Now > coolEnd)
             {
                 coolEnd = DateTime.Now.AddSeconds(coolTime);
-                var effectPrefab = ManagersC.obj.SpawnPrefabLocal(4);
-                effectPrefab.transform.position = caster.transform.position;
+                LocalPacketSender.SendUseSkil(4, caster.transform.position);
 
                 yield return new WaitForSeconds(damageDelay);
 

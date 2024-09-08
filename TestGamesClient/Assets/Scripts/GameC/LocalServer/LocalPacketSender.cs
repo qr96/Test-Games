@@ -12,6 +12,11 @@ public class LocalPacketSender
         server.AttackMonster(id, position);
     }
 
+    public static void SendUseSkil(int skillCode, Vector2 position)
+    {
+        server.UseSKill(skillCode, position);
+    }
+
     public static void SendAcquireItem(int id)
     {
         server.AcquireDroppedItem(id);
