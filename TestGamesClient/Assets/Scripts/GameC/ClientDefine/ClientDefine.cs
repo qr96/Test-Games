@@ -24,5 +24,23 @@ using UnityEngine;
                 path = path + "6_Weapons/Sword_1";
             return path;
         }
+
+        public static string GetSkillEffectPrefabPath(int skillCode)
+        {
+            var prefix = "Prefabs/SkillEffects/";
+            return prefix + skillCode.ToString();
+        }
+
+        public static string GetMonsterPrefabPath(int monsterCode)
+        {
+            var prefix = "Prefabs/Monsters/";
+            return prefix + monsterCode.ToString();
+        }
+
+        public static string GetDroppedItemPrefabPath(int itemCode)
+        {
+            var prefix = "Prefabs/DroppedItem/";
+            return prefix + itemCode.ToString();
+        }
     }
 }

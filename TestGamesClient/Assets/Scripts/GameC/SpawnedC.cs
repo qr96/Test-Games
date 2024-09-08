@@ -6,14 +6,14 @@ using UnityEngine;
 public class SpawnedC : MonoBehaviour
 {
     public int Id;
-    public int TypeId;
+    public string AssetKey;
 
     Action<int> removeFunc;
 
-    public void Set(int id, int typeId, Action<int> removeFunc)
+    public void Set(int id, string assetKey, Action<int> removeFunc)
     {
         Id = id;
-        TypeId = typeId;
+        AssetKey = assetKey;
         this.removeFunc = removeFunc;
     }
 
@@ -22,9 +22,9 @@ public class SpawnedC : MonoBehaviour
         return Id;
     }
 
-    public int GetTypeId()
+    public string GetTypeId()
     {
-        return TypeId;
+        return AssetKey;
     }
 
     public void SetActive(bool active)

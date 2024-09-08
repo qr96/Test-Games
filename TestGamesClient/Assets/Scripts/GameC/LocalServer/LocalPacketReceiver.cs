@@ -1,3 +1,4 @@
+using ClientDefineC;
 using LocalServerC;
 using System.Collections;
 using System.Collections.Generic;
@@ -5,9 +6,10 @@ using UnityEngine;
 
 public class LocalPacketReceiver
 {
-    public static void OnRespawnMonster(int id, int typeId, Vector2 position)
+    public static void OnRespawnMonster(int id, int monsterCode, Vector2 position)
     {
-        var monsterSpawn = ManagersC.obj.SpawnPrefab(id, typeId);
+        var assetkey = ResourceTable.GetMonsterPrefabPath(monsterCode);
+        var monsterSpawn = ManagersC.obj.SpawnPrefab(id, assetkey);
         monsterSpawn.transform.position = position;
         monsterSpawn.gameObject.SetActive(true);
 
@@ -20,11 +22,14 @@ public class LocalPacketReceiver
         var monsterObj = ManagersC.obj.GetObject(id);
         var monster = monsterObj.GetComponent<BaseEnemyC>();
 
-        if (monster != null)
+        if (monster == null)
         {
-            monster.OnDamage();
-            ManagersC.ui.GetLayout<UILayoutFieldOverlay>().ShowDamage(damage, monster.transform.position);
+            Debug.LogError($"Monster Not exists. {id}");
+            return;
         }
+
+        monster.OnDamage();
+        ManagersC.ui.GetLayout<UILayoutFieldOverlay>().ShowDamage(damage, monster.transform.position);
     }
 
     public static void OnMonsterDead(int id)
@@ -68,7 +73,8 @@ public class LocalPacketReceiver
 
     public static void OnSpawnItem(int itemId, int itemCode, Vector2 position)
     {
-        var prefab = ManagersC.obj.SpawnPrefab(itemId, 2);
+        var assetKey = ResourceTable.GetDroppedItemPrefabPath(10001);
+        var prefab = ManagersC.obj.SpawnPrefab(itemId, assetKey);
         prefab.transform.position = position;
         prefab.gameObject.SetActive(true);
         prefab.GetComponent<DroppedItem>().OnSpawnItem(itemId, itemCode);
@@ -76,7 +82,8 @@ public class LocalPacketReceiver
 
     public static void UseSkill(int id, int skillCode, Vector2 position)
     {
-        var prefab = ManagersC.obj.SpawnPrefab(id, skillCode);
+        var assetKey = ResourceTable.GetSkillEffectPrefabPath(skillCode);
+        var prefab = ManagersC.obj.SpawnPrefab(id, assetKey);
         prefab.transform.position = position;
         prefab.SetActive(true);
     }

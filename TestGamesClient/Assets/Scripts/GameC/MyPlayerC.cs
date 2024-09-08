@@ -1,3 +1,4 @@
+using ClientDefineC;
 using DG.Tweening;
 using System;
 using System.Collections;
@@ -26,7 +27,7 @@ public class MyPlayerC : MonoBehaviour, IDamageableC
     private void Start()
     {
         attackTrigger.SetTriggerEvent(onEnter: OnAttackStart, onExit: OnAttackEnd);
-        attackSkills[0].SetSkill(gameObject, 0.5f, 0.3f, 3f);
+        attackSkills[0].SetSkill(gameObject, 10002, 0.5f, 0.3f, 3f);
     }
 
     private void Update()
@@ -107,7 +108,8 @@ public class MyPlayerC : MonoBehaviour, IDamageableC
 
     void ShowAttackEffect()
     {
-        var attackPefab = ManagersC.obj.SpawnPrefabLocal(3);
+        var assetKey = ResourceTable.GetSkillEffectPrefabPath(10001);
+        var attackPefab = ManagersC.obj.SpawnPrefabLocal(assetKey);
         var attackEffect = attackPefab.GetComponent<SpriteRenderer>();
         attackEffect.DOFade(1f, 0.01f)
             .OnComplete(() =>

@@ -253,9 +253,9 @@ namespace LocalServerC
     {
         public static Stat GetStat(int typeId)
         {
-            if (typeId == 0)
+            if (typeId == 10001)
                 return new Stat() { attack = 5, hp = 30 };
-            else if (typeId == 1)
+            else if (typeId == 10002)
                 return new Stat() { attack = 10, hp = 500 };
 
             return new Stat();
@@ -272,9 +272,9 @@ namespace LocalServerC
             for (int i = 0; i < 4; i++)
             {
                 for (int j = 0; j < 4; j++)
-                    mapInfo.infoList.Add(new SpawnedInfo(SpawnType.Monster, 0, new Vector2(8 + i, -0.5f * j)));
+                    mapInfo.infoList.Add(new SpawnedInfo(SpawnType.Monster, 10001, new Vector2(8 + i, -0.5f * j)));
             }
-            mapInfo.infoList.Add(new SpawnedInfo(SpawnType.Monster, 1, new Vector2(14f, 0f)));
+            mapInfo.infoList.Add(new SpawnedInfo(SpawnType.Monster, 10002, new Vector2(14f, 0f)));
 
             return mapInfo;
         }

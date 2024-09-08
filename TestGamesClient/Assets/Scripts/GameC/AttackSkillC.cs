@@ -22,9 +22,10 @@ public class AttackSkillC : MonoBehaviour
         trigger.SetTriggerEvent(onEnter: AddTarget, onExit: RemoveTarget);
     }
 
-    public void SetSkill(GameObject caster, float damageDelay, float pushPower, float coolTime)
+    public void SetSkill(GameObject caster, int skillCode, float damageDelay, float pushPower, float coolTime)
     {
         this.caster = caster;
+        this.skillCode = skillCode;
         this.damageDelay = damageDelay;
         this.pushPower = pushPower;
         this.coolTime = coolTime;
@@ -37,7 +38,7 @@ public class AttackSkillC : MonoBehaviour
             if (targets.Count > 0 && DateTime.Now > coolEnd)
             {
                 coolEnd = DateTime.Now.AddSeconds(coolTime);
-                LocalPacketSender.SendUseSkil(4, caster.transform.position);
+                LocalPacketSender.SendUseSkil(skillCode, caster.transform.position);
 
                 yield return new WaitForSeconds(damageDelay);
 

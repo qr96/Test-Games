@@ -9,28 +9,24 @@ public class ObjectManagerC : MonoBehaviour
 
     // server
     Dictionary<int, SpawnedC> idDic = new Dictionary<int, SpawnedC>();
-    Dictionary<int, Stack<SpawnedC>> pool = new Dictionary<int, Stack<SpawnedC>>();
+    Dictionary<string, Stack<SpawnedC>> pool = new Dictionary<string, Stack<SpawnedC>>();
+    Dictionary<string, SpawnedC> prefabCache = new Dictionary<string, SpawnedC>();
 
     // client
     int localId;
     Dictionary<int, SpawnedC> localIdDic = new Dictionary<int, SpawnedC>();
 
-    private void Awake()
+    public SpawnedC SpawnPrefab(int id, string assetKey)
     {
-        for (int i = 0; i < prefabs.Count; i++)
-            pool.Add(i, new Stack<SpawnedC>());
-    }
+        SpawnedC spawned = GetPrefab(assetKey);
 
-    public SpawnedC SpawnPrefab(int id, int typeId)
-    {
-        SpawnedC spawned;
+        if (spawned == null)
+        {
+            Debug.LogError($"Failed to Load prefab. assetKey : {assetKey}");
+            return null;
+        }
 
-        if (pool[typeId].Count > 0)
-            spawned = pool[typeId].Pop();
-        else
-            spawned = Instantiate(prefabs[typeId]);
-
-        spawned.Set(id, typeId, (id) => RemovePrefab(id));
+        spawned.Set(id, assetKey, (id) => RemovePrefab(id));
         idDic.Add(id, spawned);
 
         return idDic[id];
@@ -58,20 +54,21 @@ public class ObjectManagerC : MonoBehaviour
         }
     }
 
-    public SpawnedC SpawnPrefabLocal(int typeId)
+    public SpawnedC SpawnPrefabLocal(string assetKey)
     {
         var id = localId++;
-        SpawnedC spawned;
+        SpawnedC spawned = GetPrefab(assetKey);
 
-        if (pool[typeId].Count > 0)
-            spawned = pool[typeId].Pop();
-        else
-            spawned = Instantiate(prefabs[typeId]);
+        if (spawned == null)
+        {
+            Debug.LogError($"Failed to Load prefab. assetKey : {assetKey}");
+            return null;
+        }
 
-        spawned.Set(id, typeId, (id) => RemovePrefabLocal(id));
+        spawned.Set(id, assetKey, (id) => RemovePrefabLocal(id));
         localIdDic.Add(id, spawned);
-
         localIdDic[id].SetActive(true);
+
         return localIdDic[id];
     }
 
@@ -95,5 +92,34 @@ public class ObjectManagerC : MonoBehaviour
             localIdDic[id].SetActive(false);
             localIdDic.Remove(id);
         }
+    }
+
+    SpawnedC GetPrefab(string assetKey)
+    {
+        SpawnedC spawned;
+
+        if (!pool.ContainsKey(assetKey))
+            pool.Add(assetKey, new Stack<SpawnedC>());
+
+        if (pool[assetKey].Count > 0)
+            spawned = pool[assetKey].Pop();
+        else
+        {
+            if (!prefabCache.ContainsKey(assetKey))
+            {
+                var prefab = Resources.Load<SpawnedC>(assetKey);
+                if (prefab == null)
+                {
+                    Debug.LogError($"Prefab not found. assetKey : {assetKey}");
+                    return null;
+                }
+
+                prefabCache.Add(assetKey, prefab);
+            }
+
+            spawned = Instantiate(prefabCache[assetKey]);
+        }
+
+        return spawned;
     }
 }
