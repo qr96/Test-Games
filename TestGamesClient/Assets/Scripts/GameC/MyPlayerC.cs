@@ -111,24 +111,16 @@ public class MyPlayerC : MonoBehaviour, IDamageableC
         var assetKey = ResourceTable.GetSkillEffectPrefabPath(10001);
         var attackPefab = ManagersC.obj.SpawnPrefabLocal(assetKey);
         var attackEffect = attackPefab.GetComponent<SpriteRenderer>();
-        attackEffect.DOFade(1f, 0.01f)
+
+        attackEffect.color = attackEffect.color.ChangeA(1f);
+        attackEffect.DOFade(0f, 0.29f)
             .OnComplete(() =>
-            attackEffect.DOFade(0f, 0.29f)
-            .OnComplete(() =>
-            ManagersC.obj.RemovePrefabLocal(attackPefab.Id)));
+            ManagersC.obj.RemovePrefabLocal(attackPefab.Id));
 
         var attackEffectPivot = new Vector3(-0.89f, 0.61f, 0f);
-        if (input.x > 0)
-        {
-            attackEffectPivot.x *= -1;
-            attackPefab.transform.position = transform.position + attackEffectPivot;
-            attackPefab.transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
-        }
-        else if (input.x < 0)
-        {
-            attackPefab.transform.position = transform.position + attackEffectPivot;
-            attackPefab.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
-        }
+        attackPefab.transform.parent = gameObject.transform;
+        attackPefab.transform.localPosition = attackEffectPivot;
+        attackPefab.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
     }
 
     Vector2 CalculatePushVector(Vector2 myVector, Vector2 enemyVector)

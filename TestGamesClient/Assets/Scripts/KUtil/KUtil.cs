@@ -16,6 +16,11 @@ public static class Extension
     {
         return new Vector3(vector.x, vector.y, z);
     }
+
+    public static Color ChangeA(this Color color, float alpha)
+    {
+        return new Color(color.r, color.g, color.b, alpha);
+    }
 }
 
 public static class KUtil
