@@ -11,4 +11,10 @@ public class SpriteRendererListC : MonoBehaviour
         foreach (var renderer in spriteRenders)
             renderer.material = mat;
     }
+
+    public void SetColor(Color color)
+    {
+        foreach (var renderer in spriteRenders)
+            renderer.color = color;
+    }
 }
